@@ -1,0 +1,81 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Author: Matthieu Perrin
+% Part: 
+% Exercise: 
+
+\begingroup
+
+\SetKwFunction{Read}{read}
+\SetKwFunction{Insert}{insert}
+
+\begin{exercice}[Implémentation des CRDTs~\footnote{[IMPR21] Damien Imbs, Achour Mostéfaoui, Matthieu Perrin, Michel Raynal. \emph{Set-constrained delivery broadcast: A communication abstraction for read/write implementable distributed objects.} TCS 2021}]
+
+  Dans cet exercice, on cherche à implémenter un CRDT $\langle C, R, Q, q_0, \tau, \rho \rangle$ linéarisable.
+  Pour cela, on introduit \Broadcast{SCD}, qui renforce \Broadcast{mutual} en ajoutant la propriété suivante :
+  \begin{description}
+  \item[SCD-ordering :] Pour toute paire de messages $(m, m')$, $\mathscr{P}_{\lessdot}(m) \subseteq \mathscr{P}_{\lessdot}(m') \lor \mathscr{P}_{\lessdot}(m') \subseteq \mathscr{P}_{\lessdot}(m)$
+  \end{description}
+
+  On considère l'algorithme~\ref{algo:SCD} ci-dessous. 
+
+  \begin{algorithm}
+    \Method{\Broadcast{scd} $m$}{
+      $delivered \leftarrow delivered \cup \{ \langle m, i \rangle\}$\;
+      \Do{$old \neq delivered$}{
+        $old \leftarrow delivered$\;
+        \Broadcast{mutual} $\textsc{mset}(old)$\;
+      }
+      \Deliver{scd} $m$ \From $p_i$\;
+    }
+    \Upon{\Deliver{mutual} $\textsc{mset}(s)$ \From $p_j$}{
+      \For{$\langle m, k \rangle \in delivered \setminus s$}{
+        \Deliver{scd} $m$ \From $p_k$\;
+      }
+      $delivered \leftarrow delivered \cup s$\;
+    }
+    \caption{scd-broadcast{scd} (?) dans le modèle $\mathcal{CAMP}_{n, t}[mutual-broadcast]$ (code pour $p_i$)}
+    \label{algo:SCD}
+  \end{algorithm}
+
+  \begin{question}
+  \item Montrer que l'algorithme~\ref{algo:SCD} respecte la propriété SCD-ordering. 
+  \item Quelle propriété n'est pas respectée par l'algorithme~\ref{algo:SCD} ?
+  \item Corriger l'algorithme~\ref{algo:SCD} pour implémenter \Broadcast{scd}.
+  \end{question}
+
+  Nous voulons maintenant implémenter un ensemble séquentiellement cohérent\footnote{[L79] Leslie Lamport. \emph{How to Make a Multiprocessor
+  Computer That Correctly Executes Multiprocess Programs.} IEEE Transactions on Computers 1979}. On commence par rappeler la définition de la cohérence séquentielle,
+  puis on s'intéresse à l'algorithme~\ref{algo:set} ci-dessous.
+
+  \begin{definition}[Sequential consistency]
+    Les valeurs retournées par toutes les opérations sont les mêmes que si toutes les opérations étaient exécutées dans un ordre total unique,
+    respectant l'ordre des opérations de chaque processus.
+  \end{definition}
+  
+
+  \begin{algorithm}
+    $\mathit{state}_i \leftarrow \emptyset$\;
+    \Method{$\Insert(v)$}{
+      \SBroadcast{scd} $\textsc{insert}(v)$%\;
+    }
+    \Method{$\Read()$}{
+      \Return $\mathit{state}_i$%\;
+    }
+    \Upon{\Deliver{scd} $\textsc{insert}(v)$ \From $p_j$}{
+      $\mathit{state}_i \leftarrow \mathit{state}_i \cup \{v\}$%\;
+    }
+    \caption{Grow-Only-Set (code pour $p_i$)}
+    \label{algo:set}
+  \end{algorithm}
+
+
+  \begin{question}
+  \item L'algorithme~\ref{algo:set} est-il séquentiellement cohérent ? Est-il linéarisable ? 
+  \item Modifiez l'algorithme pour le rendre linéarisable. 
+  \item Modifiez l'algorithme pour autoriser la suppression d'un élément. 
+  \end{question}
+  
+\end{exercice}
+
+\endgroup
+\endinput

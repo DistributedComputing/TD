@@ -1,0 +1,52 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Author: Matthieu Perrin
+% Part: 
+% Exercise: 
+
+\begingroup
+
+\begin{exercice}[Exécutions d'un programme réparti]
+  
+  On considère trois processus $p_1,p_2,p_3$ dans un modèle asynchrone sans crash.
+    
+  \begin{minipage}{.24\textwidth}
+    \begin{algorithm}[H]
+      \Process{$p_1$}{
+        \Send $m_1$ \To $p_3$\\
+        \Send $m_2$ \To $p_2$
+      }
+    \end{algorithm}
+  \end{minipage}%
+  %
+  \begin{minipage}{.37\textwidth}
+    \begin{algorithm}[H]
+      \Process{$p_2$}{
+        \Send $m_3$ \To $p_3$\;
+      }
+      \Upon{\Receive $m_2$ \From $p_1$ \At $p_2$}{
+        \Send $m_4$ \To $p_3$
+      }
+    \end{algorithm}
+  \end{minipage}%
+  %
+  \begin{minipage}{.37\textwidth}
+    \begin{algorithm}[H]
+      \Upon{\Receive $m_k$ \From $p_j$ \At $p_3$}{
+        $\Print(k)$
+      }
+    \end{algorithm}
+  \end{minipage}
+
+  \begin{question}
+  \item Décrire la machine à états du programme ci-dessus. 
+  \end{question}
+
+  \begin{question}
+  \item Décrire toutes les exécutions causales possibles. 
+  \end{question}
+
+\end{exercice}
+
+\endgroup
+\endinput
+

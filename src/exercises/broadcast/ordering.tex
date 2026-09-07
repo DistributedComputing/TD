@@ -1,0 +1,35 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Author: Matthieu Perrin
+% Part: 
+% Exercise: 
+
+\begingroup
+
+\begin{exercice}[Ordre sur les messages\footnote{[HT94] Vassos Hadzilacos, Sam Toueg. \emph{A modular approach to fault-tolerant broadcasts and related problems.} 1994}]
+  Dans un premier temps, on s'intéresse à la propriété d'ordre suivante sur les canaux de communication : 
+  \begin{description}
+  \item[FIFO ordering] Si un processus $p_i$ fifo-\Send $m$ puis $m'$ à un processus $p_j$, alors $p_j$ ne peut pas fifo-\Receive $m'$ avant $m$. 
+  \end{description}
+  \begin{question}
+  \item Proposez un algorithme pour implémenter fifo-\Send dans le modèle $\mathcal{CAMP}_{n, t}[\emptyset]$. 
+  \end{question}
+
+  On s'intéresse maintenant à l'abstraction de communication \Broadcast{causal},
+  qui vérifie les mêmes propriétés que \Broadcast{rb}, ainsi que la propriété suivante :
+  \begin{description}
+  \item[Causal ordering] Si un processus $p_i$ \Broadcast{causal} $m'$ après avoir \Deliver{causal} $m$,
+    alors aucun processus ne peut pas \Deliver{causal} $m'$ avant $m$.
+  \end{description}
+  \begin{question}
+  \item Proposez un algorithme pour implémenter \Broadcast{causal} dans le modèle \linebreak $\mathcal{CAMP}_{n, t}[\Broadcast{rb}]$.
+    On veillera à limiter la complexité en espace au maximum\footnote{Bernadette Charron-Bost. \emph{Concerning the Size of Logical Clocks in Distributed Systems.} IPL 1991}. 
+  \item Montrez que si l'on remplace les canaux de l'algorithme~\ref{algo:URB} par des canaux FIFO,
+    on implémente \linebreak \Broadcast{causal} dans le modèle $\mathcal{CAMP}_{n, t}[fifo-\Send]$.
+  \item Proposez une spécification pour un système de communication causale point-à-point.
+  \item Proposez un algorithme de communication causale point-à-point.
+  \end{question}
+\end{exercice}
+
+\endgroup
+\endinput
+

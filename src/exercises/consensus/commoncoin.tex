@@ -1,0 +1,79 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Author: Matthieu Perrin
+% Part: 
+% Exercise: 
+
+\begingroup
+
+\begin{exercice}[Implémentation du common coin\footnote{[AH90] James Aspnes and Maurice Herlihy. \emph{Fast randomized consensus using shared memory.} Journal of algorithms 1990}]
+  
+  Le but de cet exercice est d'implémenter un common coin, tel qu'il existe une probabilité $0 < \rho \le \frac{1}{2}$ telle que tous les processus
+  obtiennent $0$ (respectivement 1) avec probabilité au moins $\rho$ (avec probabilité $1-2 \rho$, les processus peuvent obtenir des valeurs différentes).
+  On commence par rappeler le Théorème Central-Limite (TCL). 
+  
+  \begin{theorem}[Théorème Central-Limite]
+    Soient $x_1, ..., x_k$ une suite de $k$ variables aléatoires réelles d'espérance $\mu$ et d'écart-type $\sigma$. On a :
+    $$\forall \alpha>0,  \lim_{k \to \infty}\mathbb P\left(\frac{\sum_{i=1}^k x_i - k \mu}{\sigma\sqrt{k}}\leq \alpha\right)  =  \Phi(\alpha)$$
+
+    Par exemple, si $x_1, ..., x_k$ suivant une loi de Bernouilli $\mathcal{B}\left(\frac{1}{2}\right)$ (c'est-à-dire $50\%$ de chance de tirer 0, et $50\%$ de chance de tirer 1), et pour $\alpha = -1$ :
+    
+    $$\lim_{k \to \infty}\mathbb{P}\left( \sum_{i=1}^k x_i\leq \frac{k - \sqrt{k}}{2 } \right) = \lim_{k \to \infty}\mathbb{P}\left( \sum_{i=1}^k x_i \geq \frac{k + \sqrt{k}}{2 } \right) \simeq 0.159$$
+  \end{theorem}
+
+  Le TCL nous donne une première implémentation du common coin, sous l'hypothèse $t<\sqrt{n}$ (algorithme~\ref{algo:commonCoinSqrt}).
+  
+  \begin{algorithm}
+    \SetKwFunction{Common}{common\_coin}
+    \SetKwFunction{Local}{local\_coin}
+    \SetKwFunction{Rand}{rand}
+    \lLVariables{}{$\mathit{draws}_i \leftarrow 0$; $\mathit{sum}_i \leftarrow 0$}
+    \Operation{$\Common.\Rand()$}{
+      \Broadcast{rb} $\textsc{draw}(\Local.\Rand())$\;
+      \Wait $\mathit{draws}_i \ge n-t$\;
+      \Return $\mathit{sum}_i > \frac{\mathit{draws}_i}{2}$\;
+    }
+    \When{\Receive $\textsc{draw}(x_j)$ \From $p_j$}{
+      $\mathit{draws}_i \leftarrow \mathit{draws}_i + 1$; $\mathit{sum}_i \leftarrow \mathit{sum}_i + x_j$\;
+    }
+    \caption{Common coin dans le modèle $CAMP_{n,t}[\texttt{local\_coin}, rb-broadcast, t<\sqrt{n}]$}
+    \label{algo:commonCoinSqrt}
+  \end{algorithm}
+
+  \begin{question}
+  \item Montrez que si plus de $\frac{n+t}{2}$ processus tirent la même valeur pour leur local coin, alors tous les processus retournent cette valeur.
+    En déduire que l'algorithme~\ref{algo:commonCoinSqrt} implémente un common coin avec $\rho = 0.159$. 
+  \end{question}
+  
+  Pour supprimer l'hypothèse $t<\sqrt{n}$, il faut tirer $\mathcal{O}(n^2)$ variables aléatoires, plutôt que $\mathcal{O}(n)$.
+  On considère l'algorithme~\ref{algo:commonCoinMutual} ci-dessous :
+  
+  \begin{algorithm}
+    \SetKwFunction{Common}{common\_coin}
+    \SetKwFunction{Local}{local\_coin}
+    \SetKwFunction{Rand}{rand}
+    \lLVariables{}{$\mathit{draws}_i \leftarrow 0$; $\mathit{sum}_i \leftarrow 0$}
+    \Operation{$\Common.\Rand()$}{
+      \While{$\mathit{draws}_i < n^2$}{
+        \Broadcast{causal-mutual} $\textsc{draw}(\Local.\Rand())$\;
+      }
+      \Broadcast{causal-mutual} $\textsc{synch}()$\;
+      \Return $\mathit{sum}_i > \frac{\mathit{draws}_i}{2}$\label{algo:commonCoinMutual:return}\;
+    }
+    \When{\Deliver{causal-mutual} $\textsc{draw}(x_j)$ \From $p_j$}{
+      $\mathit{draws}_i \leftarrow \mathit{draws}_i+1$; $\mathit{sum}_i \leftarrow \mathit{sum}_i+x_j$\;
+    }
+    \caption{Common coin dans le modèle $CAMP_{n,t}[\texttt{local\_coin}, causal-mutual-broadcast]$}
+    \label{algo:commonCoinMutual}
+  \end{algorithm}
+
+  \begin{question}
+  \item Soit $p_i$ un processus sur le point de terminer (ligne~\ref{algo:commonCoinMutual:return}), et soit $p_j$ un processus.
+    Montrer que $p_i$ a reçu tous les messages $\textsc{draw}$ envoyés par $p_j$, à l'exception possible du dernier. 
+  \item En déduire que le nombre total de tirages $k$ est tel que $n^2 \le k < n^2 + n$, et qu'au moins $k-n$ tirages sont
+    reçus par tous les processus. 
+  \item En déduire que l'algorithme~\ref{algo:commonCoinMutual} implémente un common coin avec $\rho = 0.159$. 
+  \end{question}
+\end{exercice}
+
+\endgroup
+\endinput

@@ -1,0 +1,26 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Author: Matthieu Perrin
+% Part: 
+% Exercise: 
+
+\begingroup
+
+\begin{exercice}[Le théorème CAP]
+  Le ``théorème CAP'' a été initialement formulé comme la conjecture suivante par Brewer \footnote{Eric A. Brewer. \emph{Towards robust distributed systems. (Invited Talk)} PODC 2000} :
+  Il est impossible de construire un système réparti, vérifiant à la fois, la \textbf{C}ohérence forte et la disponibilité (\textbf{A}vailability) 
+  dans un système soumis aux \textbf{P}artitions. La conjecture a ultérieurement été reformulée et démontrée par Gilbert et Lynch\footnote{[GL02] Seth Gilbert, Nancy Lynch. \emph{Brewer's conjecture and the feasibility of consistent, available, partition-tolerant web services.} ACM Sigact News, 2002} sous la forme suivante :
+  \begin{theorem}[CAP]
+    Il est impossible d'implémenter un registre SWMR linéarisable dans $\mathcal{CAMP}_{n, t}\left[t\ge\frac{n}{2}\right]$. 
+  \end{theorem}
+
+  Le but de cet exercice est de démontrer le théorème CAP. On suppose (par l'absurde) qu'il existe une implémentation des registres SWMR linéarisables dans le modèle $\mathcal{CAMP}_{n, t}\left[t\ge\frac{n}{2}\right]$.
+  \begin{question}
+  \item On suppose $n=2$ et $t=1$. Décrivez toutes les sorties possibles de l'algorithme \ref{algo:RWPatterns} quand $p_1$ crashe au tout début de l'exécution. 
+  \item On suppose qu'il n'y a pas de crash, mais que le réseau est partitionné : tous les messages ont une longue latence (à préciser). Que peut-il se passer ? 
+  \item Déduisez-en le théorème CAP.
+  \end{question}
+\end{exercice}
+
+\endgroup
+\endinput
+

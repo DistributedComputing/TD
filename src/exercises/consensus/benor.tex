@@ -1,0 +1,80 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Author: Matthieu Perrin
+% Part: 
+% Exercise: 
+
+\begingroup
+
+\begin{exercice}[Consensus binaire randomisé\footnote{[B83] Michael Ben-Or. \emph{Another advantage of free choice for completely asynchronous agreement protocols.} PODC 1983}]
+  
+  Le but de cet exercice est d'étudier l'algorithme de consensus randomizé de Ben-Or. Il s'agit d'un algorithme de consensus binaire,
+  c'est-à-dire tel que les seules valeurs qui peuvent être proposées sont $0$ et $1$.
+%  Cet algorithme s'appuie sur l'abstraction Abort-Adopt-Commit (AAC) définie ci-dessous.
+
+  \begin{definition}[Abort-Adopt-Commit]
+  Abort-Adopt-Commit est un affaiblissement du consensus dans lequel tous les processus peuvent
+  proposer $0$ ou $1$, et retourner $\textsc{abort}$, $\textsc{adopt}(v)$ ou $\textsc{commit}(v)$, où $v \in \{0, 1\}$, tel que :
+  \begin{description}
+  \item [AAC-Validité.] Si tous les processus proposent la même valeur $v$, $\textsc{commit}(v)$ est la seule sortie possible.
+  \item [AAC-Quasi-Accord.] Si deux processus retournent des valeurs différentes, alors ces valeurs sont adjacentes dans la liste : 
+    $\textsc{commit}(0); \textsc{adopt}(0); \textsc{abort}; \textsc{adopt}(1); \textsc{commit}(1)$.
+  \item [AAC-Terminaison.] Une invocation de ${\sf propose}()$ par un processus correct termine.
+  \end{description}
+  \end{definition}
+  
+  Dans un premier temps, on s'intéresse à l'algorithme~\ref{algo:Filter} ci-dessous.
+  
+  \begin{algorithm}
+    \SetKwFunction{Filter}{filter}
+    \SetKwFunction{Local}{local\_coin}
+    \SetKwFunction{Rand}{rand}
+    \lLVariables{}{$\mathit{received}_i \leftarrow \emptyset$}
+    \Operation{$\Filter(v)$}{
+      \SBroadcast{mutual} $\textsc{filter}(v)$\;
+      \Return $\mathit{received}_i$\;
+    }
+    \lWhen{\Deliver{mutual} $\textsc{filter}(v)$ \From $p_j$}{
+      $\mathit{received}_i \leftarrow \mathit{received}_i \cup \{v\}$%
+    }
+    \caption{Algorithme filter dans le modèle $CAMP_{n,t}[mutual-broadcast]$}
+    \label{algo:Filter}
+  \end{algorithm}
+
+  \begin{question}
+  \item Quelles valeurs peuvent être retournées par l'algorithme~\ref{algo:Filter} s'il est appelé avec des booléens de $\{0,1\}$ ?
+  \item Donnez un exemple d'exécution de l'algorithme~\ref{algo:Filter} où un processus retourne $\{0\}$ et un autre $\{0, 1\}$. 
+  \item Démontrez qu'il est impossible que deux processus retournent respectivement $\{v\}$ et $\{v'\}$ si $v\neq v'$.
+  \item Démontrez que si tous les processus appellent $\textsc{filter}(v)$ avec le même $v$, $\{v\}$ est la seule sortie possible.
+  \item Proposez un algorithme pour implémenter Abort-Adopt-Commit. 
+  \end{question}
+
+  On passe maintenant à l'algorithme de Ben-Or, qui implémente le consensus binaire à partir d'objets Abort-Adopt-Commit.
+  
+  \begin{algorithm}
+    \SetKwFunction{Propose}{propose}
+    \SetKwFunction{Rand}{rand}
+    \lSVariables{}{$\textsc{aac}[1, 2, ...]$: sequence of AAC objects}
+    \Operation{$\Propose(v)$}{
+      $val_i\leftarrow v$\;
+      \For{$r = 1, 2, ...$}{
+        \Switch{$\textsc{aac}[r].\Propose(val_i)$}{
+          \lCase{$\textsc{commit}(v)$}{\Return $v$}
+          \lCase{$\textsc{adopt}(v)$}{$val_i\leftarrow v$}
+          \lCase{$\textsc{abort}$}{$val_i\leftarrow \Rand()$}
+        }
+      }
+    }
+    \caption{Algorithme de Ben-Or}
+    \label{algo:benOr}
+  \end{algorithm}
+
+  \begin{question}
+  \item Démontrez la validité : toute valeur décidée a été proposée.
+  \item Démontrez l'accord : il ne peut exister deux processus qui décident des valeurs différentes.
+  \item Démontrez la terminaison : tout processus décide avec probabilité $1$. 
+  \item Quelle est la complexité de l'algorithme~\ref{algo:benOr} ?
+  \end{question}
+\end{exercice}
+
+\endgroup
+\endinput

@@ -1,0 +1,57 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Author: Matthieu Perrin
+% Part: 
+% Exercise: 
+
+\begingroup
+
+
+\SetKwFunction{Add}{add}
+\SetKwFunction{Insert}{insert}
+\SetKwFunction{Delete}{delete}
+\SetKwFunction{Contains}{contains}
+\SetKwData{Inserted}{inserted}
+\SetKwData{Deleted}{deleted}
+
+\begin{exercice}[L'ensemble OR-Set]
+
+  Le but de cet exercice est de concevoir un ensemble permettant d'insérer et de supprimer des éléments,
+  tout en garantissant l'\emph{eventual consistency}.
+
+  On considère d'abord une machine à états dont l'état est constitué de deux listes :
+  \begin{itemize}
+    \item la liste \Inserted, contenant toutes les valeurs insérées, et
+    \item la liste \Deleted, contenant toutes les valeurs supprimées.
+  \end{itemize}
+
+  Les opérations sont :
+  \begin{itemize}
+  \item $\Insert(v): \Inserted.\Add(v)$, 
+  \item $\Delete(v): \Deleted.\Add(v)$,
+  \item $\Contains(v): \Return (v \in \Inserted \setminus \Deleted)$.
+  \end{itemize}
+
+  \begin{question}
+    \item Montrer que toutes les opérations de mise à jour commutent. Que peut-on en déduire ?
+  \end{question}
+
+  Le problème de la machine à états précédente est qu'il est impossible de réinsérer une valeur après sa suppression.  
+  Pour résoudre ce problème, on définit l'\emph{OR-Set} (\emph{Observed-Remove Set}).
+
+  \begin{itemize}
+  \item Lorsqu'on exécute $\Insert(v)$, on génère un identifiant $t$ unique (par exemple une estampille de Lamport) et on insère le couple $\langle v, t\rangle$ dans la liste \Inserted.  
+  \item Lorsqu'on exécute $\Delete(v)$, on ajoute à \Deleted\ tous les couples $\langle v, t\rangle$ actuellement présents dans \Inserted.  
+  \item L'opération $\Contains(v)$ renvoie vrai s'il reste au moins un couple $\langle v, t\rangle$ dans $\Inserted \setminus \Deleted$.
+  \end{itemize}
+  
+  \begin{question}
+    \item Écrire l'algorithme de l'OR-Set.
+    \item Modifier l'algorithme pour réduire au maximum la complexité spatiale.
+      On pourra utiliser la diffusion causale.
+  \end{question}
+
+\end{exercice}
+
+\endgroup
+\endinput
+

@@ -1,0 +1,59 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Author: Matthieu Perrin
+% Part: 
+% Exercise: 
+
+\begingroup
+
+\SetKwFunction{Apply}{apply}
+
+\begin{exercice}[Eventual consistency]
+
+  On considère l'algorithme~\ref{algo:naif} ci-dessous pour implémenter une machine à états répliquée.
+  
+  \begin{algorithm}
+    $q \leftarrow q_0$\;
+    \Method{$\Apply(c \in C) : R$}{
+      \Let $r\leftarrow \rho(q, c)$\;
+      \Broadcast{urb} $\textsc{command}(c)$\;
+      \Return $r$\;
+    }
+    \Upon{\Deliver{urb} $\textsc{command}(c)$ \From $p_j$}{
+      $q \leftarrow \tau(q, c)$\;
+    }
+    \caption{Réplication de la machine à états $\langle C, R, Q, q_0, \tau, \rho \rangle$ (code pour $p_i$)}
+    \label{algo:naif}
+  \end{algorithm}
+
+  \begin{question}
+  \item Identifiez des classes d'exécutions (ensemble de paires invocation/réponse, situées dans le temps réel)
+  qui peuvent se produire dans l'algorithme~\ref{algo:naif}, mais pas dans le modèle clients/serveur. 
+  \end{question}
+
+  On fait maintenant l'hypothèse que la machine à états est un CRDT, défini comme suit\footnote{[SPBZ11] Marc Shapiro, Nuno Preguiça, Carlos Baquero, Marek Zawirski. \emph{A comprehensive study of Convergent and Commutative Replicated Data Types}. 2011} :
+  \begin{definition}[CRDT]
+    Une machine à états $\langle C, R, Q, q_0, \tau, \rho \rangle$ est un \emph{Commutative Replicated Data Type} si : 
+    \begin{itemize}
+    \item Son ensemble de commandes est partitionné en un ensemble de lectures $L$ et un ensemble d'écritures $E$
+      \begin{itemize}
+      \item Les lectures ne changent pas l'état : $\forall c \in L, \forall q\in Q, \tau(q, c) = q$
+      \item Les écritures retournent une valeur neutre $\bot$ :  $\exists \bot\in R, \forall c \in E, \forall q\in Q, \rho(q, c) = \bot$
+      \end{itemize}
+    \item Toutes ses écritures commutent : $\forall c_1, c_2 \in E, \forall q\in Q, \rho(\rho(q, c_1), c_2) = \rho(\rho(q, c_2), c_1)$
+    \end{itemize}
+  \end{definition}  
+
+  \begin{question}
+  \item Démontrez que, si l'algorithme~\ref{algo:naif} est appliqué à un CRDT, alors on a la propriété suivante\footnote{[V09] Werner Vogels. \emph{Eventually Consistent}. CACM 2009} :
+  \begin{description}
+  \item[Eventual consistency] Si les processus appellent les commandes d'écriture un nombre fini de fois,
+    alors il existe un \emph{état de convergence} $q_f$ tel qu'un nombre fini de lectures ne sont pas faites
+    dans l'état $q_f$ (c'est-à-dire retournent une valeur différente de $\rho(q_f, c)$, où $c$ est la commande de lecture appelée).
+  \end{description}
+  \item Proposez des propriétés logiques plus fortes que \emph{Eventual consistency} vérifiées par l'algorithme~\ref{algo:naif} appliqué à un CRDT.
+  \end{question}
+\end{exercice}
+
+\endgroup
+\endinput
+

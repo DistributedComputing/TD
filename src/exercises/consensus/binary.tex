@@ -1,0 +1,39 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Author: Matthieu Perrin
+% Part: 
+% Exercise: 
+
+\begingroup
+
+\SetKwFunction{Propose}{propose}
+
+\begin{exercice}[Du consensus binaire au consensus multi-valué\footnote{[MRT00] Achour Mostefaoui, Michel Raynal and Frédéric Tronel. \emph{From binary consensus to multivalued consensus in asynchronous message-passing systems.} IPL 2000}]
+
+  Le but de cet algorithme est d'implémenter le consensus multi-valué à partir du consensus binaire. 
+  
+  \begin{question}
+  \item Démontrez les propriétés d'accord, validité et terminaison de l'algorithme~\ref{algo:binConsTomvCons} ci-dessous.
+  \end{question}
+
+  \begin{algorithm}
+    \lSVariables{}{$\textsc{bin\_cons}[1, 2, ...]$: sequence of binary consensus objects}
+    \lLVariables{}{$\mathit{proposals}_i \leftarrow [\bot, ..., \bot]$}
+    \Operation{$\Propose(v \in \mathbb{N})$}{
+      \Broadcast{urb} $\textsc{proposal}(v)$\;
+      \For{$k = 0, 1, 2, ...$}{
+        \If{$\textsc{bin\_cons}[k].\Propose(\mathit{proposals}_i[k \mod n] \neq \bot)$}{
+          \Wait{$\mathit{proposals}_i[k \mod n] \neq \bot$}\;
+          \Return $\mathit{proposals}_i[k \mod n]$\;
+        }
+      }
+    }
+    \lWhen{\Deliver{urb} $\textsc{proposal}(v)$ \From $p_j$}{
+      $\mathit{proposals}_i[j] \leftarrow v$%\;
+    }
+    \caption{Du consensus binaire au consensus multi-valué (code pour $p_i$)}
+    \label{algo:binConsTomvCons}
+  \end{algorithm}  
+\end{exercice}
+
+\endgroup
+\endinput

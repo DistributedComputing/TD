@@ -1,0 +1,48 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Author: Matthieu Perrin
+% Part: 
+% Exercise: 
+
+\begingroup
+
+\SetKwFunction{csend}{causal-send}
+\SetKwFunction{crec}{causal-receive}
+\SetKwFunction{cbc}{cb.broadcast}
+\SetKwFunction{cdel}{cb.deliver}
+
+\begin{exercice}[Communication causale point-à-point]
+
+  Le but de cet exercice est de concevoir un service de communication \emph{causal point-à-point},
+  permettant à des processus de s'échanger des messages grâce à des primitives \csend et \crec,
+  offrant une propriété d'ordre similaire à celle de \cbc.
+
+  \begin{question}
+  \item Expliquez pourquoi le scénario suivant viole la causalité.
+    En déduire une spécification de la propriété d'ordre du service attendu.
+
+  \begin{center}
+    \begin{tikzpicture}[y=7mm]
+      \draw[process] (0, 3) node[left]{$p_1$} to (7, 3);
+      \draw[process] (0, 2) node[left]{$p_2$} to (7, 2);
+      \draw[process] (0, 1) node[left]{$p_3$} to (7, 1);
+
+      \draw[messages] (2, 3) edge[bend below] (5.5, 1) node[above] {$m_1$};
+      \draw[messages] (3, 3) edge             (3.5, 2) node[above] {$m_2$};
+      \draw[messages] (4, 2) edge             (4.5, 1) node[above] {$m_3$};
+    \end{tikzpicture}
+  \end{center}
+
+    
+  \item Supposons que chaque processus maintienne une horloge vectorielle $V_i[1..n]$, transmise avec chaque message.  
+    Expliquez pourquoi ces informations ne suffisent pas pour préserver la causalité entre messages destinés à des processus différents.  
+    Quelles informations supplémentaires faudrait-il pour que chaque processus sache quand un message peut être délivré sans violer la causalité ?
+
+  \item Proposez un  algorithme assurant la causalité point-à-point.  
+    Vérifiez, sur le scénario initial, que la violation observée est évitée.
+  \end{question}
+
+\end{exercice}
+
+\endgroup
+\endinput
+

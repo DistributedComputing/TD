@@ -1,0 +1,76 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Author: Matthieu Perrin
+% Part: 
+% Exercise: 
+
+\begingroup
+
+\begin{exercice}[Pallier les pannes de processus]
+  \footnote{[BJ87] Kenneth P. Birman and Thomas A. Joseph. \emph{Reliable Communication in the Presence of Failures.} ACM TOCS 1987}
+  \label{crash}
+  
+  On considère un ensemble de processus du modèle $\mathcal{CAMP}_{n, t}[\emptyset]$
+  communiquant en utilisant \Broadcast{sta} (\emph{send-to-all}), implémenté par l'algorithme~\ref{algo:STA}.
+
+  \begin{algorithm}
+    \Method{$\Broadcast{sta}(m)$}{
+      \lFor{$j$ \From $1$ \To $n$}{
+        \Send $\textsc{msg}(m)$ \To $p_j$%\;
+      }
+    }
+    
+    \Upon{\Receive $\textsc{msg}(m)$ \From $p_j$}{
+      \Deliver{sta} $m$ \From $p_j$\;
+    }
+    \caption{Send-to-all broadcast (code for $p_i$)}
+    \label{algo:STA}
+  \end{algorithm}
+  
+  \begin{question}
+  \item Dans quelle situation peut-il arriver que deux processus corrects ne reçoivent pas les mêmes messages ?  
+  \end{question}
+
+  On veut maintenant faire en sorte que tous les processus corrects délivrent le même ensemble de messages.
+  Pour cela, \Broadcast{urb} (\emph{uniforme reliable broadcast}) est spécifié par les propriétés suivantes
+  (``$p_i$ \Broadcast{urb} $m$'' signifie que $p_i$ a appelé $\Broadcast{urb}(m)$ ; 
+  et ``$p_i$ \Deliver{urb} de $p_j$'' signifie que $p_i$ a exécuté la ligne ``\Deliver{urb} $m$ \From $p_j$'') :
+
+  %  \begin{definition}
+  \begin{description}
+  \item[URB-Validité] Si $p_i$ \Deliver{urb} $m$ de $p_j$, $p_j$ a \Broadcast{urb} $m$
+  \item[URB-Intégrité] $p_i$ \Deliver{urb} $m$ au plus une fois
+  \item[URB-Terminaison] Si un processus correct $p_i$ \Broadcast{urb} $m$, $p_i$ \Deliver{urb} $m$ de $p_i$.
+  \item[URB-Fiabilité] Si un processus $p_i$ \Deliver{urb} $m$, tous les corrects \Deliver{urb} $m$.
+  \end{description}
+  %  \end{definition}
+  On s'intéresse maintenant à l'algorithme~\ref{algo:URB} ci-dessous.
+  
+  \begin{algorithm}
+    \Method{$\Broadcast{urb}(m)$}{
+      \Send $\textsc{msg}(m, i)$ to $p_i$\;
+    }
+    
+    \Upon{\Receive $\textsc{msg}(m, j)$ \From $p_k$}{
+      \If{$p_i$ has not yet urb-delivered $m$}{
+        \lFor{$l$ \From $1$ \To $n$}{
+          \Send $\textsc{msg}(m, j)$ \To $p_l$\label{algo:urb:sendall}%\;
+        }
+        \Deliver{urb} $m$ \From $p_j$\label{algo:urb:deliver}\;
+      }
+    }
+    \caption{Uniform-reliable-broadcast (code for $p_i$)}
+    \label{algo:URB}
+  \end{algorithm}
+  
+  \begin{question}
+  \item Montrez que l'algorithme~\ref{algo:URB} vérifie les propriétés de \Broadcast{urb}. 
+  \item On se propose d'inverser l'ordre des lignes \ref{algo:urb:sendall} et \ref{algo:urb:deliver}.
+    Quelles propriétés ne sont plus vérifiées ? 
+  \item Proposez une spécification de \Broadcast{rb} (\emph{reliable broadcast}),
+    la plus forte possible, qui est vérifiée même en inversant les deux lignes. 
+  \end{question}
+\end{exercice}
+
+\endgroup
+\endinput
+

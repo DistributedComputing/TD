@@ -1,0 +1,46 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Author: Matthieu Perrin
+% Part: 
+% Exercise: 
+
+\begingroup
+
+\begin{exercice}[Optimisation de \Broadcast{to}]
+  L'algorithme~\ref{algo:to-from-consensus} rappelle la réduction de \Broadcast{to} au consensus vu en cours.
+  
+  \begin{algorithm}
+    \SetKwFunction{Propose}{propose}
+    \lSVariables{}{$\textsc{cons}[1, 2, ...]$: sequence of consensus objects}
+    \lLVariables{}{$\mathit{broadcast}_i, \mathit{delivered}_i \leftarrow \varepsilon$: lists of pairs $\langle \mathit{message}, \mathit{pid} \rangle$}
+    \Operation{\Broadcast{to} $(m)$}{
+      \Broadcast{rb} $\textsc{msg}(m)$\;
+      \Wait $\langle m, i \rangle \in \mathit{delivered}_i$\;
+    }
+    \When{\Deliver{rb} $\textsc{msg}(m)$ \From $p_j$}{
+      $\mathit{broadcast}_i \leftarrow \mathit{broadcast}_i \cdot \langle m, j \rangle$\;
+    }
+    \Task{}{
+      \For{$k = 1, 2, 3, ...$}{
+        \Wait $\mathit{broadcast}_i \setminus \mathit{delivered}_i \neq \varepsilon$\;
+        \Let $\mathit{proposed} \leftarrow \left(\mathit{broadcast}_i \setminus \mathit{delivered}_i\right)[1]$\;
+        \Let $\langle m, j \rangle \leftarrow \textsc{cons}[k].\Propose(\mathit{proposed})$\;
+        \Deliver{to} $m$ \From $p_j$\;
+        $\mathit{delivered}_i \leftarrow \mathit{delivered}_i \cdot \langle m, j \rangle$\;
+      }
+    }
+    \caption{to-broadcast dans le modèle $CAMP_{n,t}[\text{rb-broadcast}, \text{Consensus}]$ (code pour $p_i$)}\label{algo:to-from-consensus}
+  \end{algorithm}
+
+  \begin{question}
+  \item Réécrire l'algorithme~\ref{algo:to-from-consensus} en l'optimisant au maximum :
+    \begin{itemize}
+    \item Faire des Consensus sur les identifiants de messages, plutôt que les messages.
+    \item Remplacer la liste $\mathit{delivered}_i$ par une horloge vectorielle.
+    \item Peut-on remplacer \Broadcast{rb} par \Broadcast{sta} ? 
+    \end{itemize}
+  \end{question}
+  
+\end{exercice}
+
+\endgroup
+\endinput

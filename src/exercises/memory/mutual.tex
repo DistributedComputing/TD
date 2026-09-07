@@ -1,0 +1,89 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Author: Matthieu Perrin
+% Part: 
+% Exercise: 
+
+\begingroup
+
+\SetKwFunction{MPPatterns}{mp-patterns}
+\SetKwFunction{RWPatterns}{rw-patterns}
+\SetKwData{Reg}{reg}
+
+\begin{exercice}[Mutual broadcast\footnote{[DMPR23] Mathilde Déprés, Achour Mostéfaoui, Matthieu Perrin, Michel Raynal. \emph{Send/Receive Patterns Versus Read/Write Patterns in Crash-Prone Asynchronous Distributed Systems.} DISC 2023}]
+
+  On considère les deux algorithmes suivants, dans lesquels deux processus $p_0$ et $p_1$
+  communiquent soit en s'envoyant des messages (algorithme \ref{algo:MPPatterns}), soit en
+  lisant et écrivant dans des variables partagées (algorithme \ref{algo:RWPatterns}). 
+  
+  \begin{minipage}{.5\textwidth}
+    \begin{algorithm}[H]
+      \Method{$\MPPatterns(m)$}{
+        \Broadcast{rb} $\textsc{msg}(i)$\;
+        \Wait{$p_i$ has rb-delivered $\textsc{msg}(i)$} \;
+        \Print $(p_i$ has rb-delivered $\textsc{msg}(1-i))$\;
+      }
+      \caption{Motifs en passage de messages}
+      \label{algo:MPPatterns}
+    \end{algorithm}
+  \end{minipage}
+  \begin{minipage}{.5\textwidth}
+    \begin{algorithm}[H]
+      $\Reg \leftarrow [\False, \False]$\;
+      \Method{$\RWPatterns(m)$}{
+        $\Reg[i] \leftarrow \True$\;
+        \Print $(\Reg[1-i])$\;
+      }
+      \caption{Motifs en mémoire partagée}
+      \label{algo:RWPatterns}
+    \end{algorithm}
+  \end{minipage}
+  
+  \begin{question}
+  \item Décrivez toutes les sorties possibles des algorithmes \ref{algo:MPPatterns} et \ref{algo:RWPatterns}. 
+  \end{question}
+
+  On commence par définir la relation binaire $\lessdot$ sur les messages comme suit : pour toute paire de messages $m_i$ et $m_j$ diffusés
+  par des processus $p_i$ et $p_j$ respectivement, on écrit $m_i \lessdot m_j$ si $p_j$ (l'émetteur de $m_j$) délivre $m_i$ avant $m_j$.
+  De plus, pour tout message $m$, on note $\mathscr{P}_{\lessdot}(m) = \{m' | m' \lessdot m\}$ le passé de $m$ selon $\lessdot$. 
+
+  
+  Dans cet exercice, on s'intéresse à l'abstraction de communication \Broadcast{mutual},
+  qui vérifie les mêmes propriétés que \Broadcast{rb}, en plus de la propriété d'ordre suivante : 
+  \begin{description}
+  \item[Mutual ordering :] $\lessdot$ est une relation totale. 
+  \end{description}
+
+  \begin{question}
+    \item Reformulez, en français, la propriété Mutual ordering. 
+  \item Démontrez la propriété suivante, liée au temps réel : si un processus $p_i$ \Broadcast{mutual} un message $m_i$,
+    puis \Deliver{mutual} $m_i$ avant que $p_j$ \Broadcast{mutual} un message $m_j$, alors $p_j$ ne peut pas \Deliver{mutual} $m_j$ avant $m_i$. 
+  \end{question}
+
+  On considère maintenant l'algorithme~\ref{algo:MBroadcast} ci-dessous.
+  
+  \begin{algorithm}[H]
+    \Method{$\Broadcast{mutual}(m)$}{
+      \Broadcast{causal} $\textsc{init}(m)$\;
+      \Wait{$p_i$ has causal-delivered $\textsc{ack}(m)$ \From at least $n-t-1$ processes} \;
+      \Deliver{mutual} $m$ \From $p_i$\;
+    }
+    \Upon{$\textsc{init}(m)$ is causal-delivered \From $p_j$}{
+      \If{$i\neq j$}{
+        causal-\Send \textsc{ack}(m) \To $p_j$\;
+        mutual-\Deliver $m$ \From $p_j$\;
+      }
+    }
+    \caption{mutual-broadcast dans le modèle $\mathcal{CAMP}_{n, t}[causal-broadcast]$ (code pour $p_i$)}
+    \label{algo:MBroadcast}
+  \end{algorithm}
+
+  \begin{question}
+  \item Démontrez que l'algorithme~\ref{algo:MBroadcast} vérifie la propriété Mutual ordering dans le modèle \linebreak $\mathcal{CAMP}_{n, t}[causal-broadcast]$.
+  \item On cherche maintenant à implémenter directement \Broadcast{mutual} dans le modèle  $\mathcal{CAMP}_{n, t}[\emptyset]$.
+    Proposer une implémentation qui réduit la complexité au maximum. 
+  \end{question}
+\end{exercice}
+
+\endgroup
+\endinput
+

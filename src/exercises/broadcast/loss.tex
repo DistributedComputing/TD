@@ -1,0 +1,107 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Author: Matthieu Perrin
+% Part: 
+% Exercise: 
+
+\begingroup
+
+\SetKwBroadcast{RB}{rb}
+\SetKwBroadcast{URB}{urb}
+\SetKwBroadcast{FC}{fc}
+\SetKwBroadcast{FLC}{flc}
+\SetKwBroadcast{X}{x}
+
+\begin{exercice}[Pallier la perte de messages%
+    \footnote{[BBT96] Anindya Basu, Bernadette Charron-Bost, Sam Toueg.
+    \emph{Simulating Reliable Links with Unreliable Links in the Presence of Process Crashes} (WDAG (maintenant DISC) 96)}]
+  
+  On cherche à implémenter \RB-broadcast dans un système où des messages peuvent être perdus.
+  Il est évident que si \emph{tous} les messages peuvent être perdus, on ne peut garantir
+  aucune propriété de vivacité sur le service de communication.
+  Il faut donc remplacer la propriété de \textbf{fiabilité}
+  des canaux de communication par des propriétés plus faibles.
+  On considère deux types de canaux de communication avec perte de messages :
+  Dans les \emph{fair channels} (\FC), la propriété de \textbf{fiabilité} est remplacée par la propriété de \textbf{FC-fiabilité} ;
+  Dans les \emph{fair lossy channels} (FLC), la propriété de \textbf{fiabilité} est remplacée par la propriété de \textbf{FLC-fiabilité}. 
+  \begin{description}
+  \item[Fiabilité] Si un processus $p_i$ envoie $m$ à un processus correct $p_j$, $p_j$ reçoit $m$ de $p_i$.
+  \item[FC-fiabilité] Pour tout message $m$, si un processus $p_i$ envoie $m$ à un processus correct $p_j$ un nombre infini de fois,
+    $p_j$ reçoit $m$ de $p_i$ un nombre infini de fois.
+  \item[FLC-fiabilité] Si un processus $p_i$ envoie un nombre infini de messages à un processus correct $p_j$,
+    $p_j$ reçoit un nombre infini de messages de $p_i$.
+  \end{description}
+
+  \begin{question}
+  \item Montrez que les propriétés \textbf{FC-fiabilité} et \textbf{FLC-fiabilité} sont incomparable, en donnant une exécution qui
+    respecte la \textbf{FC-fiabilité} mais pas la \textbf{FLC-fiabilité}, et inversement.
+  \item Montrez que les \emph{fair channels} et les \emph{fair lossy channels} sont équivalentes en calculabilité,
+    en donnant une implémentation des \emph{fair channels} à partir des \emph{fair lossy channels}, et inversement.
+  \end{question}
+  On considère l'algorithme \ref{algo:X}, exécuté dans un modèle utilisant des \emph{fair lossy channels}.
+  
+  \begin{algorithm}
+    \Method{\X.\Send $m$ \To $p_j$}{
+      $\Broadcast(m, j)$\;
+    }
+    \Task{$\Broadcast(m, j)$}{
+      \lWhile{\textsc{ack}(m) has not been received}{
+        \Send $\textsc{msg}(m)$ \To $p_j$%\;
+      }
+    }
+    \Upon{\Receive $\textsc{msg}(m)$ \From $p_j$}{
+      \lIf{$m$ has not been x.\Receive}{
+        x.\Receive $m$ \From $p_j$%
+      }
+      \Send $\textsc{ack}(m)$ \To $p_j$\;
+    }
+    \caption{Algorithme $X$ (code pour $p_i$)}
+    \label{algo:X}
+  \end{algorithm}
+
+  \begin{question}
+  \item Montrez que la propriété \textbf{Fiabilité} n'est pas respectée. 
+  \item Proposez une propriété de vivacité (la plus forte possible) vérifiée par l'algorithme \ref{algo:X}. 
+  \item Combinez les algorithmes~\ref{algo:URB} et~\ref{algo:X} pour obtenir un algorithme
+    implémentant \Broadcast{rb} sous l'hypothèse que les canaux sont \emph{fair lossy}.
+  \item Votre algorithme implémente-t-il \Broadcast{urb} ?
+  \end{question}
+
+  On considère maintenant l'algorithme~\ref{algo:Y}, sous l'hypothèse que le nombre de pannes
+  est au plus $t < \frac{n}{2}$ et que les canaux sont \emph{fair lossy}.
+
+\begin{algorithm}
+  \Method{\Broadcast{urb} $m$ \To $p_j$}{
+    $\Broadcast(m, i)$\;
+  }
+  \Upon{\Receive $\textsc{msg}(m, j)$ \From $p_k$}{
+    $\mathit{rec\_by}_i[m, j] \leftarrow \mathit{rec\_by}_i[m, j] \cup\{k\}$\; 
+    \If{$m$ has not been urb-delivered}{
+      $\Broadcast(m, j)$\;
+      \lIf{$|\mathit{rec\_by}_i[m, j]| = t+1$}{
+        \Deliver{urb} $m$ \From $p_j$%\;
+      }
+    }
+  }
+
+
+  \Task{$\Broadcast(m, j)$}{
+    \While{\True}{
+      \lFor{$k$ \From $1$ \To $n$}{
+        \Send $\textsc{msg}(m, j)$ \To $p_k$%
+      }
+    }
+  }
+  \caption{\textsc{urb}-broadcast avec une majorité de corrects et des canaux fair lossy. (code pour $p_i$)}
+  \label{algo:Y}
+\end{algorithm}
+
+  \begin{question}
+  \item Montrer que l'algorithme~\ref{algo:Y} implémente \Broadcast{urb}. 
+  \item Montrer que l'hypothèse $t < \frac{n}{2}$ est nécessaire pour implémenter \Broadcast{urb} dans un système avec perte de messages. 
+  \end{question}
+
+\end{exercice}
+
+\endgroup
+\endinput
+

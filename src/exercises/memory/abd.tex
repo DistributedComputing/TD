@@ -1,0 +1,53 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Author: Matthieu Perrin
+% Part: 
+% Exercise: 
+
+\begingroup
+
+\begin{exercice}[Implémentation d'un registre partagé\footnote{[ABD95] Hagit Attiya, Amotz Bar-Noy, Danny Dolev. \emph{Sharing memory robustly in message-passing systems} PODC 1990 / JACM 1995.}]
+  Le registre entier est défini comme la machine à états $\langle C_{\textsc{r}}, R_{\textsc{r}}, Q_{\textsc{r}} = \mathbb{N}, {q_0}_{\textsc{r}} = 0, \tau_{\textsc{r}}, \rho_{\textsc{r}} \rangle$, avec :
+  \begin{itemize}
+  \item $C_{\textsc{r}} = \{\mathit{read}\} \cup \{\mathit{write}(v) | v\in \mathbb{N}\}$, $R_{\textsc{r}} = \mathbb{N} \cup \{\textsc{ok}\}$
+  \item $\forall q, v\in \mathbb{N}, \tau_{\textsc{r}}(q, \mathit{read}) = q, \tau_{\textsc{r}}(q, \mathit{write}(v)) = v, \rho_{\textsc{r}}(q, \mathit{read}) = q, \rho_{\textsc{r}}(q, \mathit{write}(v)) = \textsc{ok}$. 
+  \end{itemize}
+  On se limite pour le moment à l'implémentation d'un registre Single-Writer/Multiple-Reader (SWMR) : un seul processus, $p_w$,
+  peut écrire, mais tous les processus peuvent lire, par opposition à un registre un registre Multiple-Writer/Multiple-Reader (MWMR),
+  où tous les processus peuvent écrire.
+
+  On considère maintenant l'algorithme~\ref{algo:SWMR} ci-dessous, dans lequel \SBroadcast{mutual}$(m)$ signifie que $p_i$ appelle \Broadcast{mutual}$(m)$
+  et attends d'avoir délivré $m$ localement avant de continuer son exécution.
+  
+  \begin{algorithm}
+    $val_i \leftarrow 0$; $t_i \leftarrow 0$ \;
+    \Method{$\mathit{write}(v_i)$}{
+      \SBroadcast{mutual} $\textsc{write}(v_i, t_i+1)$\;
+    }
+    \Method{$\mathit{read}()$}{
+      \SBroadcast{mutual} $\textsc{synch}()$\;
+      $v\leftarrow val_i$\;
+      \SBroadcast{mutual} $\textsc{write}(v, t_i)$\;
+      \Return $v$\;
+    }
+    \Upon{$\textsc{write}(v, t)$ is mutual-delivered \From $p_j$}{
+      \lIf{$t > t_i$}{
+        $val_i  \leftarrow v$; $t_i  \leftarrow t$%
+      }
+    }
+    \caption{Implémentation d'un registre SWMR dans $\mathcal{CAMP}_{n, t}[mutual-broadcast]$ (code pour $p_i$)}
+    \label{algo:SWMR}
+  \end{algorithm}
+
+  \begin{question}
+  \item Expliquez chaque ligne de l'algorithme~\ref{algo:SWMR}. En particulier, pour chaque appel à \SBroadcast{mutual}, 
+    donnez une exécution non-linéarisable, de l'algorithme dans lequel la ligne aurait été enlevée.
+  \item Proposez une implémentation directe de registre SWMR linéarisable dans le modèle \linebreak $\mathcal{CAMP}_{n, t}[t<\frac{n}{2}]$.
+    Vous veillerez à réduire la complexité au maximum. 
+  \item Pourquoi l'algorithme~\ref{algo:SWMR} n'implémente-t-il pas un registre MWMR linéarisable ? 
+  \item Modifiez l'algorithme~\ref{algo:SWMR} pour obtenir un registre MWMR linéarisable.
+  \end{question}
+\end{exercice}
+
+\endgroup
+\endinput
+
