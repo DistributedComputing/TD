@@ -1,10 +1,9 @@
 # LaTeX compilation files and folders
-build/
-docs/*.pdf
-
-# External dependency
-latex-libs/
-src/corrections/
+/.current_course.mk
+/latex-libs/
+/build/
+/docs/*
+!/docs/.nojekyll
 
 # Auxiliary LaTeX Files 
 *.aux
@@ -35,3 +34,4 @@ src/corrections/
 *.tmp
 *.swp
 .DS_Store
+Thumbs.db

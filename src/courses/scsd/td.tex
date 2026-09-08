@@ -1,15 +1,7 @@
 % SPDX-License-Identifier: CC-BY-SA-4.0
 % Author: Matthieu Perrin
 
-\ifdefined\CORRECTION
-  \documentclass[livret, correction]{td}
-\else
-  \documentclass[livret]{td}
-\fi
-
-\makeatletter
-\def\input@path{{src/exercises}}
-\makeatother
+\documentclass[livret]{td}
 
 \usepackage[T1]{fontenc}
 \usepackage[hidelinks]{hyperref}
@@ -80,6 +72,21 @@
 
 \session{Nouveaux types de fautes}
 \input{broadcast/loss}
+
+
+%Idées de sujet de TD : 
+%- CRDT
+%- Bracha
+%- Chandy Lamport (non, en papier à lire)
+%- taille des quorums de lecture vs écriture dans ABD
+%- Generalized Paxos
+%- Pair-broadcast
+%- Ben-Or
+%- Bakery vs Paxos
+%- Quelle structure pour une infinité de ballots, dans multi-Paxos ?
+%- Broadcast virtuellement instantanné
+%- Skeem/Epaxos
+
 
 
 \end{document}
