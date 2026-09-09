@@ -1,0 +1,30 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Session: Blocking synchronization
+% Exercise: The philosophers' dinner
+
+\begingroup
+
+\begin{exercice}[Le dîner des philosophes%
+  \footnote{Inspiration : E. W. Dijkstra, \emph{Hierarchical ordering of sequential processes}. Acta informatica (1971)}]
+  \label{exo:blocking/philosophers}
+
+  Des philosophes sont assis autour d'une table ronde. Devant
+  chaque philosophe se trouve un bol de riz. Entre chaque paire de bols voisins
+  se trouve une baguette. Ces philosophes occupent la
+  majorité de leur temps à réfléchir, mais entre deux périodes
+  d'intense réflexion, un philosophe a besoin de se nourrir. Pour
+  manger, il doit commencer par prendre sa baguette de gauche et sa
+  baguette de droite. Il peut alors manger un peu de riz. Une fois rassasié,
+  il repose les deux baguettes. Faisons l'hypothèse que chaque
+  philosophe mange pendant un temps fini et que le bol contient
+  tellement de riz qu'il en restera toujours.
+  
+  \begin{question}
+  \item En utilisant un théorème du cours, proposez une solution deadlock-free. 
+  \item Cette solution est-elle starvation-free ?
+  \end{question}
+
+\end{exercice}
+
+\endgroup
+\endinput

@@ -1,0 +1,57 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Session: Java Memory Model
+% Exercise: Identify data races
+
+\begingroup
+
+\begin{exercice}[Identification de \emph{data races}]
+  \label{exo:memory/dataraces}
+
+  On examine le programme Java suivant. Les trois variables partagées sont initialisées à \lstinline{x = 0} et \lstinline{flag = true}.
+  On suppose qu'aucun autre thread n'intervient et que les réveils intempestifs possibles de \lstinline{wait()} sont correctement
+  gérés par la boucle \lstinline{while}. On raisonne sous l'hypothèse de \emph{cohérence séquentielle} pour les questions 1–3.
+
+  \begin{lstlisting}[numbers=left]
+    final class Program {
+      static final Object o = new Object();
+      static int x = 0;
+      static boolean flag = true;
+
+      public static void main(String[] args) throws Exception {
+        Thread t = new Thread(() -> {
+          x = 1;                 
+          synchronized (o) {     
+            flag = false;        
+            o.notify();          
+          }                      
+          x = 2;                 
+        });
+
+        synchronized (o) {       
+          t.start();             
+          while (flag) {         
+            o.wait();            
+          }
+          int a = x;             
+        }                        
+        int b = x;               
+      }
+    }
+  \end{lstlisting}
+
+  \begin{enumerate}
+  \item Donnez la machine à états du programme.
+  \item Déduisez-en toutes les exécutions séquentiellement cohérentes. Quelles sont les valeurs possibles de $a$ et $b$ ?
+  \item Identifiez toutes les \emph{data races} présentes dans le programme.
+  \item Donnez deux corrections \emph{minimales} et \emph{distinctes} qui éliminent toutes les \emph{data races} :
+    \begin{itemize}
+    \item en ne modifiant que des qualificatifs (ex. \lstinline{volatile}) dans les déclarations ;
+    \item en ne modifiant que la synchronisation (ex. blocs \lstinline{synchronized}).
+    \end{itemize}
+  \item Pour chacune des deux corrections, quelles sont alors les valeurs possibles de $a$ et $b$ ?
+  \end{enumerate}
+
+\end{exercice}
+
+\endgroup
+\endinput

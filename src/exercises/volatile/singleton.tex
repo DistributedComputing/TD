@@ -1,0 +1,33 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Session: Java Memory Model
+% Exercise: The Singleton design pattern
+
+\begingroup
+
+\begin{exercice}[Singleton]
+  \label{exo:memory/singleton}
+  
+  On rappelle le code séquentiel du patron de conception \emph{Singleton}.
+
+  \begin{lstlisting}
+    class Singleton {
+      private static Singleton instance = null;
+      private Singleton() {}
+      public static Singleton getInstance() {
+        if (instance == null) {
+          instance = new Singleton();
+        }
+        return instance;
+      }
+    }
+  \end{lstlisting}
+  
+  \begin{enumerate}
+  \item Donnez une exécution avec deux threads où deux instances sont créées.
+  \item Corrigez le programme. Il faudra réduire l'usage des verrous au maximum.
+  \end{enumerate}
+
+\end{exercice}
+
+\endgroup
+\endinput

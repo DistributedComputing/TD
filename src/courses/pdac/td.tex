@@ -1,0 +1,42 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Author: Matthieu Perrin
+
+\documentclass[livret]{td}
+
+\usepackage{src/courses/pdac/config}
+
+\typeTD
+
+
+
+\hypersetup{
+  pdftitle  = {Programmation Distribuée},
+  pdfauthor = {Matthieu Perrin},
+  pdfsubject  = {TD de M1 du cours sur l'algorithmique des structures de données concurrentes},
+  pdfkeywords = {concurrence, instructions spéciales, Java, linéarisabilité, progrès non-bloquant}
+}
+
+\begin{document}
+
+\maketitlepage
+%\maketitle
+
+\session{Conditions de correction}
+\input{nonblocking/liveness}
+\input{nonblocking/linearizability}
+  
+\session{Algorithmes de pile en Java}
+\input{algorithms/boundedstack.tex}
+\input{algorithms/stack}
+ 
+\session{Structures de données non-bloquantes}
+\input{algorithms/infinitequeue.tex}
+\input{algorithms/skiplist.tex}
+ 
+\session{Calculabilité du réparti}
+\input{computability/common2}
+\input{computability/windowregister}
+
+\end{document}
+
+\endinput

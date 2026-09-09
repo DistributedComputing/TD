@@ -1,0 +1,64 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Session: Blocking synchronization
+% Exercise: Binary research trees
+
+\begingroup
+
+\begin{exercice}[Arbre binaire de recherche]
+  \label{exo:blocking/tree}
+
+  On cherche à implémenter un arbre binaire de recherche (ABR) en se basant sur le code suivant.
+  Identifier les problèmes de concurrence qui peuvent se poser, puis proposez un moyen de les résoudre.
+ 
+  \begin{lstlisting}
+    public class ABR {
+      private Node root = new Node();
+      
+      public boolean contains(int v) {
+        return root.get(v).isSet;
+      }
+      
+      public void insert(int v) {
+        Node n = root.get(v);
+        if(!n.isSet) n.setValue(v);
+      }
+      
+      public void delete(int v) {
+        Node n = root.get(v);
+        if(!n.isSet) return;
+        if(!n.smaller.isSet) n.copyNode(n.greater);
+        else {
+          Node predecessor = n.smaller;
+          while(predecessor.greater.isSet) 
+          predecessor = predecessor.greater;
+          n.value = predecessor.value;
+          predecessor.copyNode(predecessor.smaller);
+        }
+      }
+    }
+    
+    class Node {
+      Node smaller = null;
+      boolean isSet = false;
+      int value;
+      Node greater = null;
+      
+      void copyNode(Node n) { 
+        isSet = n.isSet; value = n.value; smaller = n.smaller; greater = n.greater;
+      }
+      void setValue(int v) {
+        isSet = true; value = v; smaller = new Node(); greater = new Node();
+      }
+      
+      Node get(int v) {
+        if(!isSet || v == value) return this;
+        if (v < value) return smaller.get(v);
+        return greater.get(v);
+      }
+    }
+  \end{lstlisting}
+
+\end{exercice}
+
+\endgroup
+\endinput

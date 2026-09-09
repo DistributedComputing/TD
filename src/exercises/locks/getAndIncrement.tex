@@ -1,0 +1,21 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Session: Mutual exclusion algorithms
+% Exercise: Lock from getAndIncrement
+
+\begingroup
+
+\begin{exercice}[L'instruction getAndIncrement%
+    \footnote{Algorithme : J. M. Mellor-Crummey, M. L. Scott. \emph{Algorithms for Scalable Synchronization on Shared-Memory Multiprocessors}. TOCS (1991)}]
+  \label{exo:locks/getAndIncrement}
+
+  On rappelle que la méthode \lstinline{AtomicInteger.getAndIncrement()} incrémente le contenu de son instance, et retourne la valeur écrasée de manière atomique. 
+
+  \begin{question}
+  \item Proposez une implémentation d'un verrou \emph{starvation-free} en utilisant l'instruction spéciale \lstinline{getAndIncrement}
+    et capable de supporter un nombre de threads inconnu lors de sa construction.
+  \end{question}
+
+\end{exercice}
+
+\endgroup
+\endinput

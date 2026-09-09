@@ -1,0 +1,24 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Session: Mutual exclusion algorithms
+% Exercise: Reentrant lock
+
+\begingroup
+
+\begin{exercice}[Verrou réentrant]
+  \label{exo:locks/reentrance}
+  
+  On rappelle qu'un verrou est réentrant si un thread qui a déjà pris un verrou peut
+  ré-entrer en section critique, ce qui signifie qu'il ne sera pas bloqué s'il
+  appelle \lstinline{lock()} à nouveau.
+  Pour relâcher le verrou, un thread doit appeler \lstinline{unlock()} autant
+  de fois qu'il a appelé \lstinline{lock()}.
+  
+  \begin{question}
+  \item On se donne une implémentation non réentrante des verrous.
+    La transformer en une implémentation réentrante.
+  \end{question}
+
+\end{exercice}
+
+\endgroup
+\endinput

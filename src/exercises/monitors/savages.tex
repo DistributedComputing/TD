@@ -1,0 +1,28 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Session: Synchronization through monitors
+% Exercise: Savages
+
+\begingroup
+
+\begin{exercice}[Bande de sauvages%
+  \footnote{Inspiration : G. R. Andrews. \emph{Foundations of Multithreaded, Parallel, and Distributed Programming}. Addison-Wesley (2000)}]
+  \label{exo:monitors/savages}
+  
+  Une tribu de sauvages mange son dîner dans un pot commun qui peut contenir
+  $M$ parts de potage. Quand un sauvage veut manger, il se sert au pot,
+  sauf s'il est vide. Quand le pot est vide, les sauvages réveillent le
+  cuisinier et attendent qu'il remplisse le pot.
+
+  Programmer le comportement des sauvages et du cuisinier.
+  Les contraintes sont les suivantes :
+
+  \begin{itemize}
+  \item Les sauvages ne peuvent pas se servir dans un pot vide ;
+  \item Le cuisinier ne doit remplir le pot que quand il est vide ;
+  \item Discutez les propriétés de vivacité obtenues.
+  \end{itemize}
+
+\end{exercice}
+
+\endgroup
+\endinput

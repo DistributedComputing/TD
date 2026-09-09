@@ -1,0 +1,32 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Session: Synchronization through monitors
+% Exercise: Go channels
+
+\begingroup
+
+\begin{exercice}[Le mot-clé \texttt{select} en go]
+  \label{exo:monitors/go}
+
+  En Go, un canal (\emph{channel}) est une construction du langage, proche d'une \texttt{BlockingQueue} en Java, 
+  qui permet de transférer des informations entre goroutines et qui peut bloquer jusqu'à ce qu'un élément soit disponible 
+  (lecture) ou qu'une place se libère (écriture). L'instruction \texttt{select} permet d'attendre plusieurs opérations 
+  sur des canaux et de débloquer dès que l'une d'elles est prête. Par exemple, le programme suivant affiche le premier 
+  message reçu, soit depuis \texttt{channel1}, soit depuis \texttt{channel2}.
+ 
+  \begin{lstlisting}
+    select {
+      case msg1 := <-channel1: fmt.Println(msg1)
+      case msg2 := <-channel2: fmt.Println(msg2)
+    }
+  \end{lstlisting}
+
+  \begin{question}
+  \item Il n'existe pas d'équivalent direct en Java. Concevez une abstraction qui permette d'attendre
+    sur plusieurs files bloquantes (type \texttt{BlockingQueue})
+    et de reprendre dès que l'une d'elles est prête.
+  \end{question}
+
+\end{exercice}
+
+\endgroup
+\endinput

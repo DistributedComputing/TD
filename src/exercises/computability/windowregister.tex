@@ -1,0 +1,35 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Session: Form parallelism to concurrency
+% Exercise: Amdahl's law
+
+\begingroup
+
+\begin{exercice}[Registre fenêtré]
+  Le registre fenêtré de taille $k$ possède une opération d'écriture et une opération
+  de lecture qui retourne les $k$ dernières valeurs écrites, dans l'ordre, en complétant les valeurs manquantes par des 0. 
+  \begin{lstlisting}
+    interface WindowRegister {
+      int values[];
+      
+      WindowRegister(int taille); // {
+        //   values = new int[taille];
+        //}
+      
+      int[] read(); // {
+        //  return values;
+        //}
+      
+      void write(int v); // {
+        //  for(int i = 0; i < values.length - 1; i++)
+        //    values[i] = values[i+1];
+        //  values[values.length - 1] = v;
+        //}
+    }
+  \end{lstlisting}
+  \begin{question}
+  \item Montrez que le registre fenêtré de taille $k$ a un consensus number de $k$.
+  \end{question}
+\end{exercice}
+
+\endgroup
+\endinput

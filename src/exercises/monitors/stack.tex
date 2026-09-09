@@ -1,0 +1,24 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Session: Synchronization through monitors
+% Exercise: Blocking stack
+
+\begingroup
+
+\begin{exercice}[La pile bloquante]
+  \label{exo:monitors/stack}
+
+  Une pile bloquante bornée, dont la capacité est passée en paramètre au constructeur, possède deux opérations :
+
+  \begin{itemize}
+  \item \lstinline{void push(T)} attend qu'il y ait de la place dans la pile puis ajoute un élément en tête de la pile ;
+  \item \lstinline{T pop()} attend que la pile ne soit pas vide puis supprime et retourne l'élément en tête de la pile.
+  \end{itemize}
+
+  Implémentez une pile bloquante bornée en Java.
+
+\end{exercice}
+
+\endgroup
+\endinput
+
+

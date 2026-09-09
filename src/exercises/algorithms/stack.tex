@@ -1,0 +1,42 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Session: Form parallelism to concurrency
+% Exercise: Amdahl's law
+
+\begingroup
+
+\begin{exercice}[Implémentation de la pile en Java]
+
+  On rappelle l'algorithme de pile wait-free inspiré de l'algorithme de Afek, Gafni et Morrison. 
+  
+  \begin{lstlisting}
+    public class WaitFreeStack<T> {
+      private final AtomicInteger range = new AtomicInteger(0);
+      private final AtomicReferenceArray<T> items = ???;
+      public void push(T value) {
+        int i = range.getAndIncrement();
+        items.set(i, value);
+      }
+      public T pop() {
+        for(int i = range.get()-1; i>=0; i--) {
+          T value = items.getAndSet(i, null);
+          if(value != null) return value;
+        }
+        return null;
+      }
+    }
+  \end{lstlisting}
+
+  \begin{question}
+  \item Dessinez l'exécution séquentielle de l'algorithme quand un processus exécute \lstinline{push('a'); pop();} à partir d'une pile vide.
+  \item Dessinez une exécution concurrente de l'algorithme telle que : un processus $p_1$ exécute \lstinline{push('a');} à partir d'une pile vide,
+    un autre processus $p_2$ exécute \lstinline{pop();} qui lui retourne \lstinline{null}, et dans laquelle $p_1$ fait le premier pas de calcul.
+  \item Modifiez l'algorithme pour remplacer le tableau infini par une liste chaînée.
+    Dans un premier temps, on n'essaiera pas de libérer la mémoire après son utilisation.
+  \item Proposez des stratégies pour supprimer les n\oe uds de la liste chaînée correspondant aux éléments qui ont déjà été dépilés.
+    Bien identifier les problèmes de concurrence qui peuvent se poser. 
+  \end{question}
+
+\end{exercice}
+
+\endgroup
+\endinput

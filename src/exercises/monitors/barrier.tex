@@ -1,0 +1,26 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Session: Synchronization through monitors
+% Exercise: Synchronization barrier
+
+\begingroup
+
+\begin{exercice}[Barrière de synchronisation]
+  \label{exo:monitors/barrier}
+
+  Le but de cet exercice est d'implémenter une barrière de synchronisation permettant de s'assurer qu'un certain nombre de threads $n$ aient
+  tous terminé une première phase avant de passer à la seconde. Plus précisément, la barrière contient un compteur initialisé
+  avec le paramètre $n$ de son constructeur, et expose une méthode \lstinline{void await()}.
+  Quand un thread appelle la méthode \lstinline{await}, le compteur est décrémenté et le thread appelant
+  est mis en attente tant que le compteur est strictement positif. Autrement dit, les $n$ premiers threads
+  appelant la méthode \lstinline{await} doivent attendre qu'au moins $n$ threads l'aient appelée.
+  Quand $n$ threads ou plus ont appelé la méthode \lstinline{await}, tous les threads sont libérés
+  et peuvent continuer leur exécution.
+
+  \begin{question}
+  \item Donnez une implémentation en Java d'une barrière de synchronisation, sous la forme d'un moniteur. 
+  \end{question}
+
+\end{exercice}
+
+\endgroup
+\endinput

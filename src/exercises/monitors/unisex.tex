@@ -1,0 +1,31 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Session: Synchronization through monitors
+% Exercise: Unisex toilets
+
+\begingroup
+
+\begin{exercice}[Les toilettes unisexes%
+  \footnote{Inspiration : A. B. Downey. \emph{The Little Book of Semaphores}. Green Tea Press (2008)}]
+  \label{exo:monitors/unisex}
+    
+  Les toilettes unisexes peuvent être utilisées par les hommes et par les femmes, sous les contraintes suivantes :
+  \begin{enumerate}
+  \item il ne doit jamais y avoir en même temps des hommes et des femmes aux toilettes ;
+  \item il ne doit jamais y avoir plus de trois personnes simultanément aux toilettes.
+  \end{enumerate}
+  
+  Un programme modélisant le problème est disponible sous Madoc. Le comportement des personnes qui
+  accèdent aux toilettes est déjà modélisé. Les toilettes doivent implémenter l'interface
+  \lstinline{Bathroom}, qui contient une méthode \lstinline{void enter(boolean isMale)} et une méthode \lstinline{void leave(boolean isMale)}. 
+  
+  \begin{question}
+  \item Proposez une solution deadlock-free.
+  \item Modifiez votre solution pour la rendre starvation-free.
+  \end{question}
+
+  \emph{Indice :} des humains bien élevés organiseraient probablement une file d'attente.  
+
+\end{exercice}
+
+\endgroup
+\endinput

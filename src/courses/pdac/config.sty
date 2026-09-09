@@ -1,0 +1,49 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Author: Matthieu Perrin
+
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{config}[2026/09/09 Configuration of the Concurrent Algorithms exercise booklet]
+
+\RequirePackage[T1]{fontenc}
+\RequirePackage[hidelinks]{hyperref}
+\RequirePackage{amsmath,amssymb, mathrsfs, stmaryrd}
+\RequirePackage{pdfpages}
+\RequirePackage{url}
+\RequirePackage{listings}
+\RequirePackage{graphicx}
+
+\PassOptionsToPackage{boxruled,vlined,linesnumbered}{algorithm2e}
+\RequirePackage{algos}\AlgoEnglish
+\RequirePackage{distributed}
+
+\newcommand\eqdef{\stackrel{\text{def}}{=}}
+\newtheorem{definition}{Definition}
+\newtheorem{theorem}{Théorème}
+
+\codeUE{XMS2IE310}
+\intituleUE[Programmation Distribuée -- Algorithmique des Structures de Données Concurrentes]{Programmation Distribuée \\{\LARGE{Algorithmique des Structures de Données Concurrentes}}}
+\institution{Nantes Université}
+\logo{src/img/logoUN.png}
+
+\author[Matthieu Perrin]{
+  Matthieu \textsc{Perrin}\\
+  Nantes Université\\
+  Laboratoire des Sciences du Numérique de Nantes \\
+  UMR CNRS 6004\\
+  Bureau 410, bâtiment 34 \\
+  \url{matthieu.perrin@univ-nantes.fr}\\
+}
+
+\cursus[M1 ALMA \& Smart Computing]{
+  \begin{tabular}[b]{@{}l@{}}
+    UFR Sciences et Techniques\\
+    Master en Informatique\\
+    Première année\\
+    Parcours ALMA \& Smart Computing\\
+  \end{tabular}
+}
+
+
+\endinput
+
+

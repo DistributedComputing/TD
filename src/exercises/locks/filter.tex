@@ -1,0 +1,41 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Session: Mutual exclusion algorithms
+% Exercise: The Filter algorithm
+
+\begingroup
+
+\begin{exercice}[L'algorithme de filtre
+  \footnote{Algorithme : J. L. M. Kessels. \emph{On the existence of wait-free protocols for mutual exclusion in hard real-time environments}. IPL (1982)}]
+  \label{exo:locks/filter}
+
+  On considère l'algorithme suivant, pour $3$ threads d'identifiants $0$, $1$ et $2$. 
+
+  \begin{lstlisting}
+    class PetersonFor3 {
+      private final AtomicIntegerArray entering = new AtomicIntegerArray(3);
+      private volatile int lastArrived;
+      public void lock() {
+        int i = ThreadID.get();
+        entering.set(i, 1);
+        lastArrived = i;
+        for(int j = 0; j < 3; j++) {
+          while(j != i && entering.get(j) == 1 && lastArrived == i);
+        }
+      }
+      public void unlock() {
+        int i = ThreadID.get();
+        entering.set(i, 0);
+      }
+    }
+  \end{lstlisting}
+
+  \begin{question}
+  \item Montrez qu'au plus deux threads peuvent accéder en même temps en section critique.
+  \item Combinez cet algorithme à l'algorithme de Peterson pour concevoir un verrou entre trois threads.
+  \item Généralisez à $n$ threads.
+  \end{question}
+  
+\end{exercice}
+
+\endgroup
+\endinput

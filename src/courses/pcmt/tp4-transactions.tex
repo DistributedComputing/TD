@@ -1,0 +1,215 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Author: Matthieu Perrin
+
+\documentclass{td}
+
+\usepackage{src/courses/pcmt/config}
+
+\typeTP[4]
+\title{Mémoire transactionnelle logicielle}
+\cursus{M1 ALMA}
+
+\hypersetup{
+  pdftitle  = {TP 4 - Mémoire transactionnelle logicielle},
+  pdfauthor = {Matthieu Perrin},
+  pdfsubject  = {TP de M1 du cours Programmation Concurrente en Multi-Threads},
+  pdfkeywords = {concurrence, TL2, transactions, }
+}
+
+\begin{document}
+
+\maketitle
+
+\SetKw{Var}{var}
+\SetKw{Op}{operation}
+\SetKw{Object}{object}
+\SetKw{Abort}{abort}
+
+\SetKwFunction{Value}{value}
+\SetKwFunction{Date}{date}
+\SetKwFunction{DoBegin}{begin}
+\SetKwFunction{TryCommit}{try\_to\_commit}
+\SetKwFunction{Get}{get}
+\SetKwFunction{set}{set}
+\SetKwFunction{Copy}{copy}
+\SetKwFunction{GAI}{getAndIncrement}
+
+\SetKwData{Clock}{clock}
+\SetKwData{Lws}{lws}
+\SetKwData{Lrs}{lrs}
+\SetKwData{Lcx}{lcx}
+\SetKwData{BirthDate}{birthDate}
+\SetKwData{CommitDate}{commitDate}
+
+
+\section{Introduction}
+Le concept de mémoire transactionnelle a été proposé par Herlihy et Moss en 1993~\cite{HM} sur le modèle des transactions en bases de données.
+L'algorithme TL2 a été proposé par Dice, Shalev et Shavit en 2006~\cite{DSS}. La présentation de l'algorithme et la formulation de ce sujet ont été largement inspirées
+d'un article de Imbs et Raynal de 2009~\cite{IR}. 
+
+
+L'idée est la suivante : comme avec l'utilisation de verrous, le code à exécuter atomiquement
+doit être encadré par l'appel de deux fonctions, $\DoBegin$ et $\TryCommit$.
+Entre les deux, il est possible de faire des lectures et des écritures sur des registres $X$
+en appelant les fonctions $X.\Get()$ et $X.\set(v)$.
+
+Les lectures, les écritures et l'invocation de la fonction $\TryCommit$ peuvent \emph{aborter}. Dans ce cas, on dit
+que la transaction complète aborte. Intuitivement, une transaction abortée n'a aucun effet et doit être redémarrée.
+Le critère de cohérence attendu sur les transactions est appelé
+\emph{sérialisabilité}.
+Une exécution est sérialisable si elle est équivalente à une exécution séquentielle
+(c'est-à-dire dans laquelle il n'y a pas de concurrence entre les transactions)
+qui contient toutes (et ne contient que) les transactions qui n'ont pas aborté.
+Autrement dit, l'exécution dans laquelle toutes les transactions abortées ont été supprimées,
+est séquentiellement cohérente. 
+
+La mémoire transactionnelle fournit deux interfaces :
+l'interface \lstinline{Transaction} déclare les méthodes $\DoBegin$ et $\TryCommit$,
+et l'interface \lstinline{Register} fournit les méthodes permettant de
+lire et écrire dans un registre. 
+Les aborts sont ici gérés à l'aide d'exceptions de type \lstinline{AbortException}.
+
+Le code suivant présente un exemple d'utilisation de la mémoire transactionnelle.
+Il s'agit essentiellement d'une transaction contenant deux lectures et deux écritures,
+au sein d'une boucle réessayant d'exécuter la transaction jusqu'à ce qu'elle soit acceptée.
+
+\begin{lstlisting}
+  void echange (Register<Integer> X, Register<Integer> Y) {
+    Transaction t = new STMTransaction();
+    for (;;) {
+      try {
+        t.begin();
+        Integer x = X.get(t);
+        X.set(Y.get(t), t);
+        Y.set(x, t);
+        t.try_to_commit();
+        return;
+      } catch (AbortException e) {}
+    }
+  }
+\end{lstlisting}
+
+
+\section{L'algorithme \emph{Transactional Locking 2}}
+
+Beaucoup d'algorithmes ont été proposés pour implémenter la mémoire transactionnelle, dont les plus simples
+sont expliqués par l'article de Raynal et Imbs~\cite{IR}. La lecture de cet article,
+en annexe de ce sujet, est vivement recommandée.
+L'algorithme \ref{algo:TL2} présente Transactional Locking 2 (TL2).
+Il est basé sur une horloge logique globale, $\Clock$,
+incrémentée à chaque fois qu'une transaction
+est sur le point d'être acceptée (ligne~\ref{al:incr}), et qui décrit l'ordre (ou plutôt \emph{un} ordre)
+dans laquelle les transactions acceptées sont sérialisées.
+
+Chaque registre $X$ accessible dans une transaction comporte deux champs : un champ de données
+$X.\Value$ qui contient la dernière valeur écrite et un champ de contrôle $X.\Date$ qui
+contient la date de la dernière transaction acceptée à avoir écrit dans $X$.
+De plus, un verrou est associé à chaque registre.
+
+Chaque transaction $T$ gère une variable locale $\Lrs_T$ contenant l'ensemble des variables lues,
+une variable locale $\Lws_T$ contenant l'ensemble des variables écrites au cours de $T$
+et une variable $\BirthDate$ contenant la valeur de $\Clock$ au début de la transaction.
+
+Lors d'une écriture sur $X$, une copie locale de $X$ est créée pour conserver la valeur écrite.
+De plus $X$ est placée dans l'ensemble $\Lws_T$.
+Lors d'une lecture de $X$, si $X$ a été précédemment écrite par la même transaction,
+la valeur locale est retournée. Sinon, $X$ est placée dans l'ensemble $\Lrs_T$,
+puis il est vérifié que $X$ n'a pas été modifiée depuis le début de la transaction
+en comparant la date de $X$ à $\BirthDate$
+(auquel cas l'abort est nécessaire) et la valeur en mémoire partagée est retournée.
+
+La fonction $\TryCommit$ est bloquante. Lorsqu'elle est appelée, la transaction prend les verrous
+sur tous les registres puis vérifie que les valeurs lues sont toujours
+cohérentes entre elles, et cohérentes avec les nouvelles valeurs qu'elle a écrites localement.
+Cela se fait en comparant la date actuelle de chaque registre lu à la date $\BirthDate$
+du début de la transaction. Si l'une de ces dates est plus grande, un registre a été écrit
+par une transaction concurrente et un abort est nécessaire.
+Sinon, la transaction peut être acceptée : les écritures sont reportées sur la mémoire partagée,
+à une date obtenue en incrémentant l'horloge globale.
+
+Votre travail consiste à implémenter une mémoire transactionnelle logicielle fonctionnant selon l'algorithme TL2. Chaque fonction devra être starvation-free. 
+
+\begin{algorithm}[t]
+  \Operation{$T.\DoBegin()$} {
+    re-initialize local variables\;
+    $\BirthDate \leftarrow \Clock$\;
+  }
+  \Operation{$X.\set(T, v)$} {
+    \If{there is no local copy $\Lcx$ of $X$}{
+      allocate local space $\Lcx$ for a copy
+    }
+    $\Lcx.\Value \leftarrow v$; 
+    $\Lws_T\leftarrow \Lws_T \cup \{X\}$\;
+  }
+  \Operation{$X.\Get(T)$} {
+    \eIf{there is a local copy $\Lcx$ of $X$}{
+      \Return $\Lcx.\Value$\;
+    }{
+      $\Lcx \leftarrow X.\Copy$;
+      $\Lrs_T\leftarrow \Lrs_T \cup \{X\}$\;
+      \leIf{$\Lcx.\Date > \BirthDate$}{
+        \Abort\;
+      }{
+        \Return $\Lcx.\Value$%
+      }
+    }
+  }
+  \Operation{$T.\TryCommit()$} {
+    lock all the objects in $\Lws_T$\;
+    \If{some object in $\Lrs_T$ is already locked}{
+      release all the locks;
+      \Abort\;
+    }
+    \ForEach{$X \in \Lrs_T$}{
+      \If{$X.\Date > \BirthDate$}{
+        release all the locks;
+        \Abort\;
+      }
+    }
+    $\CommitDate \leftarrow \Clock.\GAI()$\label{al:incr}\;
+    \ForEach{$X \in \Lws_T$}{
+      $X \leftarrow (\Lcx.\Value, \CommitDate)$\;
+    }
+    release all the locks;
+  }
+  \caption{Algorithme TL2}
+  \label{algo:TL2}
+\end{algorithm}
+
+\section{Références}
+
+\renewcommand{\section}[2]{}%
+
+\begin{thebibliography}{99}
+  
+\bibitem{HM}
+  Maurice Herlihy et J. Eliot B. Moss. \emph{Transactional memory: architectural support for lock-free data structures.}
+  International Symposium on Computer Architecture (1993)
+
+\bibitem{DSS}
+  Dave Dice, Ori Shalev et Nir Shavit. \emph{Transactional Locking II}.
+  International Symposium on Distributed Computing (2006)
+  
+\bibitem{IR}
+  Damien Imbs et Michel Raynal. \emph{Software transactional memories: an approach for multicore programming}.
+  International Conference on Parallel Computing Technologies (2009)
+
+\end{thebibliography}
+
+De nombreuses implémentations des mémoires transactionnelles logicielles sont disponibles en Java, même si aucune n'est universellement acceptée.
+Voici des liens vers quelques unes des plus connues.
+
+\begin{description}
+\item [AtomJava :] \url{https://wasp.cs.washington.edu/wasp_atomjava.html}
+\item [JVSTM :] \url{http://inesc-id-esw.github.io/jvstm}
+\item [Deuce STM :] \url{https://sites.google.com/site/deucestm}
+\item [Multiverse :] \url{https://github.com/pveentjer/Multiverse}
+\item [DSTM2 :] \url{http://www.oracle.com/technetwork/indexes/downloads/index.html}
+\item [ObjectFabric :] \url{https://github.com/cypof/objectfabric}
+\end{description}
+
+Étant données les limitations des mémoires transactionnelles logicielles, beaucoup de chercheurs militent pour l'introduction
+de mémoires transactionnelles matérielles, dans lesquelles les mêmes propriétés sont assurées par l'architecture physique de
+la mémoire partagée, au même titre que les caches.
+
+\end{document}

@@ -1,0 +1,76 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Session: Form parallelism to concurrency
+% Exercise: Amdahl's law
+
+\begingroup
+
+\begin{exercice}[Linéarisabilité]
+
+  On considère des registres lire/écrire, initialisés à 0.
+  
+  \begin{question}
+  \item Quelles exécutions sont linéarisables ?
+  \end{question}
+
+  \begin{center}
+    \footnotesize
+    \begin{tikzpicture}[y=7mm]
+      \draw[process] (0,1) node[left]{$p_1$} to (6,1);
+      \draw[process] (0,0) node[left]{$p_2$} to (6,0);
+      \node[operation, text width=5cm] at (3,1) {$x.set(1)$};
+      \node[operation] at (2,0) {$x.get() \rightarrow 1$};
+    \end{tikzpicture} \quad\quad
+    \begin{tikzpicture}[y=7mm]
+      \draw[process] (0,1) node[left]{$p_1$} to (6,1);
+      \draw[process] (0,0) node[left]{$p_2$} to (6,0);
+      \node[operation, text width=5cm] at (3,1) {$x.set(1)$};
+      \node[operation] at (4,0) {$x.get() \rightarrow 0$};
+    \end{tikzpicture}
+
+    \vspace{5mm}
+    --------
+    \vspace{5mm}
+
+    \begin{tikzpicture}[y=7mm]
+      \draw[process] (0,2) node[left]{$p_1$} to (6,2);
+      \draw[process] (0,1) node[left]{$p_2$} to (6,1);
+      \draw[process] (0,0) node[left]{$p_3$} to (6,0);
+      \node[operation, text width=5cm] at (3,2) {$x.set(1)$};
+      \node[operation] at (1.5,1) {$x.get() \rightarrow 1$};
+      \node[operation] at (4.5,0) {$x.get() \rightarrow 0$};
+    \end{tikzpicture} \quad\quad
+    \begin{tikzpicture}[y=7mm]
+      \draw[process] (0,2) node[left]{$p_1$} to (6,2);
+      \draw[process] (0,1) node[left]{$p_2$} to (6,1);
+      \draw[process] (0,0) node[left]{$p_3$} to (6,0);
+      \node[operation, text width=5cm] at (3,2) {$x.set(1)$};
+      \node[operation] at (3,1) {$x.get() \rightarrow 1$};
+      \node[operation] at (4,0) {$x.get() \rightarrow 0$};
+    \end{tikzpicture}
+
+    \vspace{5mm}
+    --------
+    \vspace{5mm}
+
+    \begin{tikzpicture}[y=7mm]
+      \draw[process] (0,1) node[left]{$p_1$} to (6,1);
+      \draw[process] (0,0) node[left]{$p_2$} to (6,0);
+      \node[operation] at (2.5,1) {$x.set(1)$};
+      \node[operation] at (4.5,1) {$y.get() \rightarrow 1$};
+      \node[operation] at (1.5,0) {$y.set(1)$};
+      \node[operation] at (3.5,0) {$x.get() \rightarrow 0$};
+    \end{tikzpicture} \quad\quad
+    \begin{tikzpicture}[y=7mm]
+      \draw[process] (0,1) node[left]{$p_1$} to (6,1);
+      \draw[process] (0,0) node[left]{$p_2$} to (6,0);
+      \node[operation] at (2.5,1) {$x.set(1)$};
+      \node[operation] at (4.5,1) {$y.get() \rightarrow 0$};
+      \node[operation] at (1.5,0) {$y.set(1)$};
+      \node[operation] at (3.5,0) {$x.get() \rightarrow 1$};
+    \end{tikzpicture}
+  \end{center}
+
+\end{exercice}
+
+\endgroup
+\endinput

@@ -1,0 +1,31 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Session: Blocking synchronization
+% Exercise: Pie making
+
+\begingroup
+
+\begin{exercice}[Confection de tartes]
+  \label{exo:blocking/pipeline}
+
+  On veut modéliser le fonctionnement d'un atelier de pâtisserie.
+  Pour préparer une tarte aux fraises, les pâtissiers doivent
+  effectuer plusieurs étapes modélisées par des appels de fonctions comme ceci :
+
+  \begin{itemize}
+  \item \lstinline{Fond preparerFond()} : prépare et étale un fond de tarte (20 minutes);
+  \item \lstinline{Pate cuire(Fond fond)} : cuit un fond de tarte (10 minutes);
+  \item \lstinline{Creme preparerCreme()} : prépare une crème pâtissière (10 minutes);
+  \item \lstinline{Tarte monter(Pate pate, Creme creme)} : étale la crème sur la pâte, et dispose les fruits (15 minutes).
+  \end{itemize}
+
+  \begin{question}
+  \item Proposez un programme Java parallélisant la création de tartes.
+    Chaque thread représentera un pâtissier spécialisé sur une, et une seule, tâche.
+    Vous embaucherez autant de pâtissier que nécessaire pour vous
+    assurer qu'aucun d'entre eux ne reste inactif. 
+  \end{question}
+
+\end{exercice}
+
+\endgroup
+\endinput

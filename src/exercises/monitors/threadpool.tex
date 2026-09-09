@@ -1,0 +1,34 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Session: Synchronization through monitors
+% Exercise: Thread pool implementation
+
+\begingroup
+
+\begin{exercice}[Implémentation d'un thread pool]
+  \label{exo:monitors/threadpool}
+
+  On rappelle les interfaces (partielles) des types permettant de gérer les thread pools en Java.
+  \begin{lstlisting}
+    interface Callable<T> {
+      T call();
+    }
+    interface Future<T> {
+      boolean isDone();
+      T get(); // Met le thread en attente jusqu'a la fin de la tache
+    }
+    interface ThreadPool { Future<T> submit(Callable<T> task); }
+  \end{lstlisting}
+
+  \begin{question}
+  \item Proposez une implémentation de \lstinline{Future} et de \lstinline{ThreadPool}, permettant de gérer un thread pool de taille fixe (le nombre de threads sera passé en paramètre au constructeur).  
+  \end{question}
+  On souhaite modifier la signature de \lstinline{call()} et de \lstinline{get()} en ajoutant \lstinline{throws Exception},
+  pour autoriser les tâches à lever des exceptions. Si une tâche lève une exception, elle doit pouvoir être gérée lors de la récupération du résultat.
+  \begin{question}
+  \item Modifiez votre code pour prendre en compte les exceptions.
+  \end{question}
+  
+\end{exercice}
+
+\endgroup
+\endinput

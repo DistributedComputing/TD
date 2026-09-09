@@ -1,0 +1,25 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Session: Form parallelism to concurrency
+% Exercise: Amdahl's law
+
+\begingroup
+
+\begin{exercice}[Common2]
+  On définit common2 comme l'ensemble des structures de données
+  dont toutes les opérations sont de la forme \lstinline{getAndF},
+  qui appliquent $F$ sur l'état local et retournent la valeur écrasée,
+  et telles que pour toute paire d'opérations \lstinline{getAndF} et \lstinline{getAndG},
+  \begin{itemize}
+  \item Soit $F$ et $G$ commutent, c'est à dire que pour tout état $s$, $F(G(s)) = G(F(s))$;
+  \item Soit $F$ ou $G$ écrase l'autre, c'est à dire que pour tout état $s$, $F(G(s)) = F(s)$ ou $G(F(s)) = G(s)$.
+  \end{itemize}
+
+  \begin{question}
+  \item Expliquer pourquoi la séquence, dont la seule opération est \lstinline{getAndIncrement}, est un objet de Common2. 
+  \item Donner d'autres exemples d'objets de Common2. 
+  \item Démontrer que tous les objets de Common2 ont un consensus number de 2. 
+  \end{question}
+\end{exercice}
+
+\endgroup
+\endinput

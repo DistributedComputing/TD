@@ -1,0 +1,79 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Session: Form parallelism to concurrency
+% Exercise: Amdahl's law
+
+\begingroup
+
+\begin{exercice}[Vivacité]
+  On cherche à implémenter un registre linéarisable avec une méthode \lstinline{getAndMax}
+  qui écrit l'argument s'il est supérieur à la valeur stockée dans le registre, et retourne
+  la valeur du registre à l'appel de la méthode.
+  \begin{question}
+  \item Sous quelles conditions chacun des programmes suivants termine-t-il ? 
+  \end{question}
+
+  \begin{minipage}{.47\textwidth}
+    \begin{lstlisting}[gobble=6]
+      class Maximizer1 {
+        AtomicInteger x = new AtomicInteger(0);
+        int getAndMax (int v) {
+          while(true) {
+            int old = x.get();
+            if(x.compareAndSet(old, max(old, v)))
+            return old;
+          }
+        }
+      }
+
+    \end{lstlisting}
+    \begin{lstlisting}[gobble=6]
+      class Maximizer3 {
+        AtomicInteger x = new AtomicInteger(0);
+        int getAndMax (int v) {
+          while(true) { 
+            int old = x.get() / 2;
+            if(v <= old) return old;
+            if(x.compareAndSet(2*old, 2*old+1)){
+              x.set(2*v);
+              return old;
+            }
+          }
+        }
+      }
+    \end{lstlisting}
+  \end{minipage}
+  \hspace{\fill}
+  \begin{minipage}{.47\textwidth}
+    \begin{lstlisting}[gobble=6]
+      class Maximizer2 {
+        AtomicInteger x = new AtomicInteger(0);
+        int getAndMax (int v) {
+          while(true) {
+            int old = x.get();
+            if(v <= old) return old;
+            if(x.compareAndSet(old, v))
+            return old;
+          }
+        }
+      }
+    \end{lstlisting}
+    \begin{lstlisting}[gobble=6]
+      class Maximizer4 {
+        AtomicInteger x = new AtomicInteger(0);
+        int getAndMax (int v) {
+          while(true) { 
+            int old = x.get() / 2;
+            if(x.compareAndSet(2*old, 2*old+1)){
+              x.set(2*max(old, v));
+              return old;
+            }
+          }
+        }
+      }
+
+    \end{lstlisting}
+  \end{minipage}  
+\end{exercice}
+
+\endgroup
+\endinput

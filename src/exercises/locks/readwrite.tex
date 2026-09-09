@@ -1,0 +1,24 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Session: Mutual exclusion algorithms
+% Exercise: Read-Write lock
+
+\begingroup
+
+\begin{exercice}[Verrou à \emph{lecture/écriture}]
+  \label{exo:locks/readwrite}
+
+  On rappelle qu'un verrou à \emph{lecture/écriture} peut être pris soit en
+  mode lecture (partagé entre tous les lecteurs),
+  soit en mode écriture (exclusif à l'écrivain).
+  Plusieurs lecteurs peuvent exécuter leur section critique de manière
+  concurrente, mais un écrivain doit toujours être seul en section critique. 
+
+  \begin{question}
+  \item En vous inspirant de l'algorithme de la boulangerie,
+    proposez une implémentation des verrous à lectures et écritures.
+  \end{question}
+
+\end{exercice}
+
+\endgroup
+\endinput

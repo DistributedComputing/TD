@@ -1,0 +1,38 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Session: Blocking synchronization
+% Exercise: The bank accounts
+
+\begingroup
+
+\begin{exercice}[Les comptes en banque]
+  \label{exo:blocking/bank}
+  
+  Une banque vous demande d'implémenter son nouveau système d'information.
+  Chaque compte de ses clients est représenté par un numéro de compte entier et possède un
+  certain solde entier en centimes d'euros.
+  Au centre de son système réparti, les comptes de ses clients sont gérés
+  par une classe \lstinline{Banque} possédant les deux méthodes suivantes.
+
+  \begin{itemize}
+  \item La méthode \lstinline{int solde(int compte)} retourne le solde du compte passé en paramètre.
+  \item La méthode \lstinline{boolean transfere(int montant, int de, int a)} vérifie que les fonds sont disponibles sur le compte \lstinline{de}
+    (sinon, elle s'arrête en retournant \lstinline{false}), puis elle soustrait \lstinline{montant} du compte \lstinline{de} et l'ajoute
+    au compte \lstinline{a} de manière atomique, puis retourne \lstinline{true}.
+  \end{itemize}
+  
+  On supposera que l'ensemble des comptes est représenté par un tableau de taille fixe
+  d'entiers positifs ou nuls. Lors de l'initialisation, on dotera chaque compte d'un montant fixe.
+
+  On souhaite une implémentation de \lstinline{Banque} satisfaisant la contrainte suivante :
+  
+  \og Si deux transferts ne concernent pas les mêmes comptes, on ne veut pas empêcher le parallélisme entre les deux appels à \lstinline{transfere}.\fg
+
+  \begin{question}
+  \item Comment appelle-t-on la stratégie à mettre en place pour satisfaire la contrainte ?
+  \item Proposez une implémentation de \lstinline{Banque} satisfaisant la contrainte.
+  \end{question}
+
+\end{exercice}
+
+\endgroup
+\endinput

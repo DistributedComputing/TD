@@ -1,0 +1,45 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Author: Matthieu Perrin
+
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{config}[2026/09/09 Configuration of the Distributed Computing exercise booklet]
+
+\RequirePackage[T1]{fontenc}
+\RequirePackage[hidelinks]{hyperref}
+\RequirePackage{amsmath,amssymb, mathrsfs, stmaryrd}
+\RequirePackage{pdfpages}
+
+\PassOptionsToPackage{vlined}{algorithm2e}
+\RequirePackage{algos}\AlgoEnglish
+\RequirePackage{distributed}
+
+\newcommand\eqdef{\stackrel{\text{def}}{=}}
+\newtheorem{definition}{Definition}
+\newtheorem{theorem}{Théorème}
+
+\institution{Nantes Université}
+\logo{src/img/logoUN.png}
+\codeUE{XMS3IU070}
+\intituleUE[Services de Communication et Systèmes Distribués]{Services de Communication\\et Systèmes Distribués}
+
+\cursus[M2 ALMA]{
+  \begin{tabular}[b]{l}
+    UFR Sciences et Techniques\\
+    Master Informatique\\
+    2\ieme{} année\\
+    Parcours ALMA\\
+  \end{tabular}
+}
+
+\author[Matthieu Perrin]{
+  Matthieu \textsc{Perrin}\\
+  Nantes Université\\
+  Laboratoire des Sciences du Numérique de Nantes \\
+  UMR CNRS 6004\\
+  Bureau 410, bâtiment 34 \\
+  \url{matthieu.perrin@univ-nantes.fr}\\
+}
+
+\endinput
+
+
