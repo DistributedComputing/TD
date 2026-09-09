@@ -1,6 +1,6 @@
 # DistributedComputing/TD
 
-This repository contains modular and reusable teaching materials used to build exercise sheets, practical assignments, and their corrections for the Distributed Computing course at Nantes Université.
+This repository contains modular and reusable teaching materials used to build exercise sheets and practical assignments for the Concurrent Programming and Distributed Systems courses at Nantes Université.
 
 See the [course organization](https://github.com/DistributedComputing/) for the course description and additional resources.
 
