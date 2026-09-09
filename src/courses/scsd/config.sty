@@ -8,8 +8,11 @@
 \RequirePackage[hidelinks]{hyperref}
 \RequirePackage{amsmath,amssymb, mathrsfs, stmaryrd}
 \RequirePackage{pdfpages}
+\RequirePackage{url}
+\RequirePackage{listings}
+\RequirePackage{graphicx}
 
-\PassOptionsToPackage{vlined}{algorithm2e}
+\PassOptionsToPackage{boxruled,vlined,linesnumbered}{algorithm2e}
 \RequirePackage{algos}\AlgoEnglish
 \RequirePackage{distributed}
 
@@ -17,19 +20,10 @@
 \newtheorem{definition}{Definition}
 \newtheorem{theorem}{Théorème}
 
-\institution{Nantes Université}
-\logo{src/img/logoUN.png}
 \codeUE{XMS3IU070}
 \intituleUE[Services de Communication et Systèmes Distribués]{Services de Communication\\et Systèmes Distribués}
-
-\cursus[M2 ALMA]{
-  \begin{tabular}[b]{l}
-    UFR Sciences et Techniques\\
-    Master Informatique\\
-    2\ieme{} année\\
-    Parcours ALMA\\
-  \end{tabular}
-}
+\institution{Nantes Université}
+\logo{src/img/logoUN.png}
 
 \author[Matthieu Perrin]{
   Matthieu \textsc{Perrin}\\
@@ -38,6 +32,15 @@
   UMR CNRS 6004\\
   Bureau 410, bâtiment 34 \\
   \url{matthieu.perrin@univ-nantes.fr}\\
+}
+
+\cursus[M2 ALMA]{
+  \begin{tabular}[b]{@{}l@{}}
+    UFR Sciences et Techniques\\
+    Master en Informatique\\
+    2\ieme{} année\\
+    Parcours ALMA\\
+  \end{tabular}
 }
 
 \endinput
