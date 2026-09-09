@@ -1,4 +1,5 @@
 # LaTeX compilation files and folders
+/.current_course.mk
 /latex-libs/
 /build/
 /docs/*
