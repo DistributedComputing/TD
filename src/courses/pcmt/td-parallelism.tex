@@ -1,0 +1,32 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Author: Matthieu Perrin
+
+\documentclass{td}
+
+\usepackage{src/courses/pcmt/config}
+\cursus{M1 ALMA}
+\intituleUE{Programmation Concurrente en Multi-Threads}
+
+\typeTD[1]
+\title{Du parallélisme à la concurrence}
+
+\hypersetup{
+  pdftitle  = {Programmation Concurrente en Multi-Threads},
+  pdfauthor = {Matthieu Perrin},
+  pdfsubject  = {TD de M1 du cours Programmation Concurrente en Multi-Threads},
+  pdfkeywords = {concurrence, Java, modèle de mémoire, moniteur, parallélisme, sûreté, thread, verrou, vivacité}
+}
+
+\begin{document}
+
+\maketitle
+
+\input{parallelism/amdahl}
+\input{parallelism/matrix}
+\newpage
+\input{parallelism/asynchronous}
+\input{parallelism/mad}
+
+\end{document}
+
+\endinput

@@ -1,0 +1,31 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Author: Matthieu Perrin
+
+\documentclass{td}
+
+\usepackage{src/courses/pcmt/config}
+\cursus{M1 ALMA}
+\intituleUE{Programmation Concurrente en Multi-Threads}
+
+\typeTD[4]
+\title{Le modèle mémoire de Java}
+
+\hypersetup{
+  pdftitle  = {Programmation Concurrente en Multi-Threads},
+  pdfauthor = {Matthieu Perrin},
+  pdfsubject  = {TD de M1 du cours Programmation Concurrente en Multi-Threads},
+  pdfkeywords = {concurrence, Java, modèle de mémoire, moniteur, parallélisme, sûreté, thread, verrou, vivacité}
+}
+
+\begin{document}
+
+\maketitle
+
+\input{volatile/volatile}
+\input{volatile/singleton}
+\newpage
+\input{volatile/datarace}
+
+\end{document}
+
+\endinput
