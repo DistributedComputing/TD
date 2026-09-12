@@ -1,6 +1,5 @@
 % SPDX-License-Identifier: CC-BY-SA-4.0
-% Session: Java Memory Model
-% Exercise: Identify data races
+% Author: Matthieu Perrin
 
 \begingroup
 
@@ -39,7 +38,7 @@
     }
   \end{lstlisting}
 
-  \begin{enumerate}
+  \begin{question}
   \item Donnez la machine à états du programme.
   \item Déduisez-en toutes les exécutions séquentiellement cohérentes. Quelles sont les valeurs possibles de $a$ et $b$ ?
   \item Identifiez toutes les \emph{data races} présentes dans le programme.
@@ -49,7 +48,7 @@
     \item en ne modifiant que la synchronisation (ex. blocs \lstinline{synchronized}).
     \end{itemize}
   \item Pour chacune des deux corrections, quelles sont alors les valeurs possibles de $a$ et $b$ ?
-  \end{enumerate}
+  \end{question}
 
 \end{exercice}
 
