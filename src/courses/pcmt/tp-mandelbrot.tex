@@ -4,10 +4,11 @@
 \documentclass{td}
 
 \usepackage{src/courses/pcmt/config}
+\cursus{M1 ALMA}
+\intituleUE{Programmation Concurrente en Multi-Threads}
 
 \typeTP[3]
 \title{Parallélisation de calcul d'image}
-\cursus{M1 ALMA}
 
 \hypersetup{
   pdftitle  = {TP 3 - Parallélisation de calcul d'image},
@@ -20,11 +21,15 @@
 
 \maketitle
 
+\begin{description}
+\item[Code de départ associé :] \url{https://github.com/DistributedComputing/TP-mandelbrot}.
+\end{description}
+
+
 Le but de ce travail est de paralléliser un programme affichant une représentation
 graphique de l'ensemble de Mandelbrot. Une grande portion du code a déjà été faite pour vous.
-
-Le code de départ est disponible sur le dépôt GitHub du cours :
-\url{https://github.com/ProgrammationMultiThread/TP-mandelbrot}.
+Le code de départ est disponible sur le dépôt
+\href{https://github.com/DistributedComputing/TP-mandelbrot}{GitHub} du TP.
 
 \section{Architecture du programme}
 
@@ -78,6 +83,7 @@ Il est donc important de distinguer deux étapes effectuées par le serveur grap
   \label{fig:running}
 \end{figure}
 
+\pagebreak
 \section{Travail à réaliser}
 
 Le programme fourni inclut une classe \lstinline{SequentialDrawer}, qui contient une implémentation

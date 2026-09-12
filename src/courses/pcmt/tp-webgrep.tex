@@ -4,10 +4,11 @@
 \documentclass{td}
 
 \usepackage{src/courses/pcmt/config}
+\cursus{M1 ALMA}
+\intituleUE{Programmation Concurrente en Multi-Threads}
 
 \typeTP[2]
 \title{Recherche récursive d'expressions régulières sur le Web}
-\cursus{M1 ALMA}
 
 \hypersetup{
   pdftitle  = {TP 2 - Recherche récursive d'expressions régulières sur le Web},
@@ -19,6 +20,12 @@
 \begin{document}
 
 \maketitle
+
+\begin{description}
+\item[Code de départ associé :] \url{https://github.com/DistributedComputing/TP-webgrep}.
+\end{description}
+
+\section{Introduction}
 
 Pour pouvoir répondre efficacement aux requêtes des utilisateurs,
 les moteurs de recherche comme Google maintiennent un index de l'ensemble des pages du Web,
@@ -33,15 +40,15 @@ Par exemple, la commande suivante doit rechercher toutes les pages contenant le 
 accessibles depuis la page Wikipédia de la ville :
 
 \begin{lstlisting}
-$ java WebGrep Nantes https://fr.wikipedia.org/wiki/Nantes
-https://fr.wikipedia.org/wiki/Nantes
-https://fr.wikiquote.org/wiki/Nantes
-https://fr.wiktionary.org/wiki/Nantes
-https://fr.wikivoyage.org/wiki/Nantes
-...
+  $ java webgrep.WebGrep Nantes https://fr.wikipedia.org/wiki/Nantes
+  > https://fr.wikipedia.org/wiki/Nantes
+  > https://fr.wikiquote.org/wiki/Nantes
+  > https://fr.wiktionary.org/wiki/Nantes
+  > https://fr.wikivoyage.org/wiki/Nantes
+  > ...
 \end{lstlisting}
 
-\paragraph{Algorithme à implémenter.}
+\section{Algorithme à implémenter}
 
 Pour obtenir les résultats, on commencera par chercher une occurrence de l'expression dans la page donnée en argument.
 Si la page contient l'expression, on continuera la recherche en suivant tous les liens de la page, récursivement.
@@ -49,31 +56,32 @@ Le temps de recherche étant largement dominé par les accès réseau, on souhai
 en \emph{parallélisant} le programme.  
 Le but du TP est donc de concevoir une architecture parallèle efficace.
 
+Une grande portion du code a déjà été faite pour vous.
+Téléchargez le code de départ dans le dépôt \href{https://github.com/DistributedComputing/TP-webgrep}{GitHub} du TP.
 Une classe \lstinline{Tools} est fournie en Java pour effectuer les tâches séquentielles.
 Elle contient principalement les méthodes statiques suivantes :
 
 \begin{description}
-  \item[\texttt{Tools.initialize(args)}] analyse les arguments du programme pour extraire l'expression régulière, les URL de départ et les options d'affichage.  
-  La liste complète des options peut être affichée avec \texttt{Tools.initialize("--help")}.  
+\item[\texttt{Tools.initialize(args)}] analyse les arguments du programme pour extraire l'expression régulière, les URL de départ et les options d'affichage.  
+  La liste complète des options peut être affichée en lançant le programme avec l'argument \texttt{"--help"}.  
   Après initialisation, la liste des URL de départ est accessible via \texttt{Tools.startingURL()}  
   et le nombre de threads à créer via \texttt{Tools.numberThreads()}.
-
-  \item[\texttt{Tools.parsePage(address)}] télécharge et analyse la page HTML à l'adresse indiquée,  
+  
+\item[\texttt{Tools.parsePage(address)}] télécharge et analyse la page HTML à l'adresse indiquée,  
   puis retourne un objet \texttt{ParsedPage} donnant accès à la liste des liens hypertextes  
   (\texttt{page.hrefs()}) et à la liste des éléments HTML contenant l'expression régulière recherchée  
   (\texttt{page.matches()}).
 
-  \item[\texttt{Tools.print(page)}] produit un affichage textuel de la \texttt{ParsedPage} passée en argument,
+\item[\texttt{Tools.print(page)}] produit un affichage textuel de la \texttt{ParsedPage} passée en argument,
   en respectant les options d'affichage configurées lors de l'initialisation de \texttt{Tools}.
 \end{description}
 
-\medskip
-\noindent
-\textbf{Remarque :} le pare-feu des salles de TP bloque l'accès à Internet pour les requêtes automatiques.
-L'option \lstinline{-O} (ou \lstinline{--offline}) permet de travailler en mode local :
-les pages sont alors générées de manière déterministe, à partir d'exemples fournis avec le code source Java.
+\paragraph{Remarque} le pare-feu des salles de TP bloque l'accès à Internet pour les requêtes automatiques.
+L'option \lstinline{-O} (ou \lstinline{--offline}), activée par défaut lorsque le programme est lancé sans argument,
+simule le chargement des pages sans se connecter à internet.
 
-\paragraph{Architecture parallèle.}
+\pagebreak
+\section{Architecture parallèle}
 
 L'architecture parallèle du programme doit respecter les contraintes suivantes :
 

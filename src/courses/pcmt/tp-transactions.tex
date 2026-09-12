@@ -4,10 +4,11 @@
 \documentclass{td}
 
 \usepackage{src/courses/pcmt/config}
+\cursus{M1 ALMA}
+\intituleUE{Programmation Concurrente en Multi-Threads}
 
 \typeTP[4]
 \title{Mémoire transactionnelle logicielle}
-\cursus{M1 ALMA}
 
 \hypersetup{
   pdftitle  = {TP 4 - Mémoire transactionnelle logicielle},
@@ -19,6 +20,10 @@
 \begin{document}
 
 \maketitle
+
+\begin{description}
+\item[Code de départ associé :] \url{https://github.com/DistributedComputing/TP-transactions}.
+\end{description}
 
 \SetKw{Var}{var}
 \SetKw{Op}{operation}
@@ -41,12 +46,10 @@
 \SetKwData{BirthDate}{birthDate}
 \SetKwData{CommitDate}{commitDate}
 
-
 \section{Introduction}
 Le concept de mémoire transactionnelle a été proposé par Herlihy et Moss en 1993~\cite{HM} sur le modèle des transactions en bases de données.
 L'algorithme TL2 a été proposé par Dice, Shalev et Shavit en 2006~\cite{DSS}. La présentation de l'algorithme et la formulation de ce sujet ont été largement inspirées
 d'un article de Imbs et Raynal de 2009~\cite{IR}. 
-
 
 L'idée est la suivante : comme avec l'utilisation de verrous, le code à exécuter atomiquement
 doit être encadré par l'appel de deux fonctions, $\DoBegin$ et $\TryCommit$.
@@ -89,45 +92,8 @@ au sein d'une boucle réessayant d'exécuter la transaction jusqu'à ce qu'elle 
   }
 \end{lstlisting}
 
-
+\pagebreak
 \section{L'algorithme \emph{Transactional Locking 2}}
-
-Beaucoup d'algorithmes ont été proposés pour implémenter la mémoire transactionnelle, dont les plus simples
-sont expliqués par l'article de Raynal et Imbs~\cite{IR}. La lecture de cet article,
-en annexe de ce sujet, est vivement recommandée.
-L'algorithme \ref{algo:TL2} présente Transactional Locking 2 (TL2).
-Il est basé sur une horloge logique globale, $\Clock$,
-incrémentée à chaque fois qu'une transaction
-est sur le point d'être acceptée (ligne~\ref{al:incr}), et qui décrit l'ordre (ou plutôt \emph{un} ordre)
-dans laquelle les transactions acceptées sont sérialisées.
-
-Chaque registre $X$ accessible dans une transaction comporte deux champs : un champ de données
-$X.\Value$ qui contient la dernière valeur écrite et un champ de contrôle $X.\Date$ qui
-contient la date de la dernière transaction acceptée à avoir écrit dans $X$.
-De plus, un verrou est associé à chaque registre.
-
-Chaque transaction $T$ gère une variable locale $\Lrs_T$ contenant l'ensemble des variables lues,
-une variable locale $\Lws_T$ contenant l'ensemble des variables écrites au cours de $T$
-et une variable $\BirthDate$ contenant la valeur de $\Clock$ au début de la transaction.
-
-Lors d'une écriture sur $X$, une copie locale de $X$ est créée pour conserver la valeur écrite.
-De plus $X$ est placée dans l'ensemble $\Lws_T$.
-Lors d'une lecture de $X$, si $X$ a été précédemment écrite par la même transaction,
-la valeur locale est retournée. Sinon, $X$ est placée dans l'ensemble $\Lrs_T$,
-puis il est vérifié que $X$ n'a pas été modifiée depuis le début de la transaction
-en comparant la date de $X$ à $\BirthDate$
-(auquel cas l'abort est nécessaire) et la valeur en mémoire partagée est retournée.
-
-La fonction $\TryCommit$ est bloquante. Lorsqu'elle est appelée, la transaction prend les verrous
-sur tous les registres puis vérifie que les valeurs lues sont toujours
-cohérentes entre elles, et cohérentes avec les nouvelles valeurs qu'elle a écrites localement.
-Cela se fait en comparant la date actuelle de chaque registre lu à la date $\BirthDate$
-du début de la transaction. Si l'une de ces dates est plus grande, un registre a été écrit
-par une transaction concurrente et un abort est nécessaire.
-Sinon, la transaction peut être acceptée : les écritures sont reportées sur la mémoire partagée,
-à une date obtenue en incrémentant l'horloge globale.
-
-Votre travail consiste à implémenter une mémoire transactionnelle logicielle fonctionnant selon l'algorithme TL2. Chaque fonction devra être starvation-free. 
 
 \begin{algorithm}[t]
   \Operation{$T.\DoBegin()$} {
@@ -175,6 +141,45 @@ Votre travail consiste à implémenter une mémoire transactionnelle logicielle 
   \caption{Algorithme TL2}
   \label{algo:TL2}
 \end{algorithm}
+
+
+Beaucoup d'algorithmes ont été proposés pour implémenter la mémoire transactionnelle, dont les plus simples
+sont expliqués par l'article de Raynal et Imbs~\cite{IR}. La lecture de cet article,
+en annexe de ce sujet, est vivement recommandée.
+L'algorithme \ref{algo:TL2} présente Transactional Locking 2 (TL2).
+Il est basé sur une horloge logique globale, $\Clock$,
+incrémentée à chaque fois qu'une transaction
+est sur le point d'être acceptée (ligne~\ref{al:incr}), et qui décrit l'ordre (ou plutôt \emph{un} ordre)
+dans laquelle les transactions acceptées sont sérialisées.
+
+Chaque registre $X$ accessible dans une transaction comporte deux champs : un champ de données
+$X.\Value$ qui contient la dernière valeur écrite et un champ de contrôle $X.\Date$ qui
+contient la date de la dernière transaction acceptée à avoir écrit dans $X$.
+De plus, un verrou est associé à chaque registre.
+%
+Chaque transaction $T$ gère une variable locale $\Lrs_T$ contenant l'ensemble des variables lues,
+une variable locale $\Lws_T$ contenant l'ensemble des variables écrites au cours de $T$
+et une variable $\BirthDate$ contenant la valeur de $\Clock$ au début de la transaction.
+
+Lors d'une écriture sur $X$, une copie locale de $X$ est créée pour conserver la valeur écrite.
+De plus $X$ est placée dans l'ensemble $\Lws_T$.
+Lors d'une lecture de $X$, si $X$ a été précédemment écrite par la même transaction,
+la valeur locale est retournée. Sinon, $X$ est placée dans l'ensemble $\Lrs_T$,
+puis il est vérifié que $X$ n'a pas été modifiée depuis le début de la transaction
+en comparant la date de $X$ à $\BirthDate$
+(auquel cas l'abort est nécessaire) et la valeur en mémoire partagée est retournée.
+
+La fonction $\TryCommit$ est bloquante. Lorsqu'elle est appelée, la transaction prend les verrous
+sur tous les registres puis vérifie que les valeurs lues sont toujours
+cohérentes entre elles, et cohérentes avec les nouvelles valeurs qu'elle a écrites localement.
+Cela se fait en comparant la date actuelle de chaque registre lu à la date $\BirthDate$
+du début de la transaction. Si l'une de ces dates est plus grande, un registre a été écrit
+par une transaction concurrente et un abort est nécessaire.
+Sinon, la transaction peut être acceptée : les écritures sont reportées sur la mémoire partagée,
+à une date obtenue en incrémentant l'horloge globale.
+
+Récupérez le code de départ dans le dépôt \href{https://github.com/DistributedComputing/TP-transactions}{GitHub}.
+Votre travail consiste à implémenter une mémoire transactionnelle logicielle fonctionnant selon l'algorithme TL2. Chaque fonction devra être starvation-free.
 
 \section{Références}
 
