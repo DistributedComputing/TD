@@ -36,9 +36,9 @@
     \end{algorithm}
   \end{minipage}
   
-  \begin{question}
+  \begin{questions}
   \item Décrivez toutes les sorties possibles des algorithmes \ref{algo:MPPatterns} et \ref{algo:RWPatterns}. 
-  \end{question}
+  \end{questions}
 
   On commence par définir la relation binaire $\lessdot$ sur les messages comme suit : pour toute paire de messages $m_i$ et $m_j$ diffusés
   par des processus $p_i$ et $p_j$ respectivement, on écrit $m_i \lessdot m_j$ si $p_j$ (l'émetteur de $m_j$) délivre $m_i$ avant $m_j$.
@@ -51,11 +51,11 @@
   \item[Mutual ordering :] $\lessdot$ est une relation totale. 
   \end{description}
 
-  \begin{question}
+  \begin{questions}
     \item Reformulez, en français, la propriété Mutual ordering. 
   \item Démontrez la propriété suivante, liée au temps réel : si un processus $p_i$ \Broadcast{mutual} un message $m_i$,
     puis \Deliver{mutual} $m_i$ avant que $p_j$ \Broadcast{mutual} un message $m_j$, alors $p_j$ ne peut pas \Deliver{mutual} $m_j$ avant $m_i$. 
-  \end{question}
+  \end{questions}
 
   On considère maintenant l'algorithme~\ref{algo:MBroadcast} ci-dessous.
   
@@ -75,11 +75,11 @@
     \label{algo:MBroadcast}
   \end{algorithm}
 
-  \begin{question}
+  \begin{questions}
   \item Démontrez que l'algorithme~\ref{algo:MBroadcast} vérifie la propriété Mutual ordering dans le modèle \linebreak $\mathcal{CAMP}_{n, t}[causal-broadcast]$.
   \item On cherche maintenant à implémenter directement \Broadcast{mutual} dans le modèle  $\mathcal{CAMP}_{n, t}[\emptyset]$.
     Proposer une implémentation qui réduit la complexité au maximum. 
-  \end{question}
+  \end{questions}
 \end{exercice}
 
 \endgroup

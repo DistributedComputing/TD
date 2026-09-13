@@ -29,12 +29,12 @@
     $p_j$ reçoit un nombre infini de messages de $p_i$.
   \end{description}
 
-  \begin{question}
+  \begin{questions}
   \item Montrez que les propriétés \textbf{FC-fiabilité} et \textbf{FLC-fiabilité} sont incomparable, en donnant une exécution qui
     respecte la \textbf{FC-fiabilité} mais pas la \textbf{FLC-fiabilité}, et inversement.
   \item Montrez que les \emph{fair channels} et les \emph{fair lossy channels} sont équivalentes en calculabilité,
     en donnant une implémentation des \emph{fair channels} à partir des \emph{fair lossy channels}, et inversement.
-  \end{question}
+  \end{questions}
   On considère l'algorithme \ref{algo:X}, exécuté dans un modèle utilisant des \emph{fair lossy channels}.
   
   \begin{algorithm}
@@ -56,13 +56,13 @@
     \label{algo:X}
   \end{algorithm}
 
-  \begin{question}
+  \begin{questions}
   \item Montrez que la propriété \textbf{Fiabilité} n'est pas respectée. 
   \item Proposez une propriété de vivacité (la plus forte possible) vérifiée par l'algorithme \ref{algo:X}. 
   \item Combinez les algorithmes~\ref{algo:URB} et~\ref{algo:X} pour obtenir un algorithme
     implémentant \Broadcast{rb} sous l'hypothèse que les canaux sont \emph{fair lossy}.
   \item Votre algorithme implémente-t-il \Broadcast{urb} ?
-  \end{question}
+  \end{questions}
 
   On considère maintenant l'algorithme~\ref{algo:Y}, sous l'hypothèse que le nombre de pannes
   est au plus $t < \frac{n}{2}$ et que les canaux sont \emph{fair lossy}.
@@ -93,10 +93,10 @@
   \label{algo:Y}
 \end{algorithm}
 
-  \begin{question}
+  \begin{questions}
   \item Montrer que l'algorithme~\ref{algo:Y} implémente \Broadcast{urb}. 
   \item Montrer que l'hypothèse $t < \frac{n}{2}$ est nécessaire pour implémenter \Broadcast{urb} dans un système avec perte de messages. 
-  \end{question}
+  \end{questions}
 
 \end{exercice}
 

@@ -37,10 +37,10 @@
     \label{algo:commonCoinSqrt}
   \end{algorithm}
 
-  \begin{question}
+  \begin{questions}
   \item Montrez que si plus de $\frac{n+t}{2}$ processus tirent la même valeur pour leur local coin, alors tous les processus retournent cette valeur.
     En déduire que l'algorithme~\ref{algo:commonCoinSqrt} implémente un common coin avec $\rho = 0.159$. 
-  \end{question}
+  \end{questions}
   
   Pour supprimer l'hypothèse $t<\sqrt{n}$, il faut tirer $\mathcal{O}(n^2)$ variables aléatoires, plutôt que $\mathcal{O}(n)$.
   On considère l'algorithme~\ref{algo:commonCoinMutual} ci-dessous :
@@ -64,13 +64,13 @@
     \label{algo:commonCoinMutual}
   \end{algorithm}
 
-  \begin{question}
+  \begin{questions}
   \item Soit $p_i$ un processus sur le point de terminer (ligne~\ref{algo:commonCoinMutual:return}), et soit $p_j$ un processus.
     Montrer que $p_i$ a reçu tous les messages $\textsc{draw}$ envoyés par $p_j$, à l'exception possible du dernier. 
   \item En déduire que le nombre total de tirages $k$ est tel que $n^2 \le k < n^2 + n$, et qu'au moins $k-n$ tirages sont
     reçus par tous les processus. 
   \item En déduire que l'algorithme~\ref{algo:commonCoinMutual} implémente un common coin avec $\rho = 0.159$. 
-  \end{question}
+  \end{questions}
 \end{exercice}
 
 \endgroup

@@ -23,10 +23,10 @@
     \label{algo:naif}
   \end{algorithm}
 
-  \begin{question}
+  \begin{questions}
   \item Identifiez des classes d'exécutions (ensemble de paires invocation/réponse, situées dans le temps réel)
   qui peuvent se produire dans l'algorithme~\ref{algo:naif}, mais pas dans le modèle clients/serveur. 
-  \end{question}
+  \end{questions}
 
   On fait maintenant l'hypothèse que la machine à états est un CRDT, défini comme suit\footnote{[SPBZ11] Marc Shapiro, Nuno Preguiça, Carlos Baquero, Marek Zawirski. \emph{A comprehensive study of Convergent and Commutative Replicated Data Types}. 2011} :
   \begin{definition}[CRDT]
@@ -41,7 +41,7 @@
     \end{itemize}
   \end{definition}  
 
-  \begin{question}
+  \begin{questions}
   \item Démontrez que, si l'algorithme~\ref{algo:naif} est appliqué à un CRDT, alors on a la propriété suivante\footnote{[V09] Werner Vogels. \emph{Eventually Consistent}. CACM 2009} :
   \begin{description}
   \item[Eventual consistency] Si les processus appellent les commandes d'écriture un nombre fini de fois,
@@ -49,7 +49,7 @@
     dans l'état $q_f$ (c'est-à-dire retournent une valeur différente de $\rho(q_f, c)$, où $c$ est la commande de lecture appelée).
   \end{description}
   \item Proposez des propriétés logiques plus fortes que \emph{Eventual consistency} vérifiées par l'algorithme~\ref{algo:naif} appliqué à un CRDT.
-  \end{question}
+  \end{questions}
 \end{exercice}
 
 \endgroup

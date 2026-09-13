@@ -29,9 +29,9 @@
   \item $\Contains(v): \Return (v \in \Inserted \setminus \Deleted)$.
   \end{itemize}
 
-  \begin{question}
+  \begin{questions}
     \item Montrer que toutes les opérations de mise à jour commutent. Que peut-on en déduire ?
-  \end{question}
+  \end{questions}
 
   Le problème de la machine à états précédente est qu'il est impossible de réinsérer une valeur après sa suppression.  
   Pour résoudre ce problème, on définit l'\emph{OR-Set} (\emph{Observed-Remove Set}).
@@ -42,11 +42,11 @@
   \item L'opération $\Contains(v)$ renvoie vrai s'il reste au moins un couple $\langle v, t\rangle$ dans $\Inserted \setminus \Deleted$.
   \end{itemize}
   
-  \begin{question}
+  \begin{questions}
     \item Écrire l'algorithme de l'OR-Set.
     \item Modifier l'algorithme pour réduire au maximum la complexité spatiale.
       On pourra utiliser la diffusion causale.
-  \end{question}
+  \end{questions}
 
 \end{exercice}
 

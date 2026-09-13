@@ -12,10 +12,10 @@
   $i,j \in \{0,\dots,n-1\}$,
   $$ M_3[i][j] = \sum_{k=0}^{n-1} M_1[i][k] \times M_2[k][j].$$
 
-  \begin{question}
+  \begin{questions}
   \item Implémentez la version séquentielle de \lstinline{product}.
-  \end{question}
-  \begin{correction}
+  \end{questions}
+  \begin{corrections}
     \begin{lstlisting}[gobble=6]
       public interface Product {
 	double[][] product(double[][] M1, double[][] M2) throws InterruptedException;
@@ -36,12 +36,12 @@
         }
       }
     \end{lstlisting}
-  \end{correction}
+  \end{corrections}
 
-  \begin{question}
+  \begin{questions}
   \item Proposez une parallélisation où chaque cellule $M_3[i][j]$ est calculée par un thread distinct (jusqu'à $n^2$ threads). 
-  \end{question}
-  \begin{correction}
+  \end{questions}
+  \begin{corrections}
     \begin{lstlisting}[gobble=6]
       package td1_parallelism.matrix;
 
@@ -73,13 +73,13 @@
 
       }
     \end{lstlisting}
-  \end{correction}
+  \end{corrections}
 
-  \begin{question}
+  \begin{questions}
   \item Proposez une version qui crée au plus $T$ threads ($T$ est une variable globale), chacun calculant un lot de cellules.
     Précisez votre stratégie de répartition.
-  \end{question}
-  \begin{correction}
+  \end{questions}
+  \begin{corrections}
     \begin{lstlisting}[gobble=6]
       public static double[][] product(int n, double[][] M1, double[][] M2) {
         double[][] M = new double[n][n];
@@ -114,13 +114,13 @@
         return M;
       }
     \end{lstlisting}
-  \end{correction}
+  \end{corrections}
 
-  \begin{question}
+  \begin{questions}
   \item Analysez la complexité en temps des versions et justifiez l'intérêt
     de limiter le nombre de threads à une borne indépendante de $n$.
-  \end{question}
-  \begin{correction}
+  \end{questions}
+  \begin{corrections}
     Si on parallélise la boucle intérieure, on passe d'une complexité $O(n^3)$ à $O(n^2)$, soit une accélération en $O(n)$.
     On peut faire mieux en parallélisant la boucle extérieure également. On passe alors de $O(n^3)$ à $O(n)$, soit une accélération en $O(n^2)$.
     Cela ne viole pas la loi d'Amdahl car on change le problème en changeant le nombre de threads :
@@ -128,7 +128,7 @@
     Si le nombre de threads est proportionnel à la taille des données, on peut espérer une accélération en $O(n)$.
     
     Remarque : le programme ci-dessus utilise $n^2 + n + 1$ threads, mais on peut utiliser les mêmes threads pour paralléliser et pour faire certains calculs.
-  \end{correction}
+  \end{corrections}
   
 \end{exercice}
 

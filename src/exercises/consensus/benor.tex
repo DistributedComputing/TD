@@ -37,13 +37,13 @@
     \label{algo:Filter}
   \end{algorithm}
 
-  \begin{question}
+  \begin{questions}
   \item Quelles valeurs peuvent être retournées par l'algorithme~\ref{algo:Filter} s'il est appelé avec des booléens de $\{0,1\}$ ?
   \item Donnez un exemple d'exécution de l'algorithme~\ref{algo:Filter} où un processus retourne $\{0\}$ et un autre $\{0, 1\}$. 
   \item Démontrez qu'il est impossible que deux processus retournent respectivement $\{v\}$ et $\{v'\}$ si $v\neq v'$.
   \item Démontrez que si tous les processus appellent $\textsc{filter}(v)$ avec le même $v$, $\{v\}$ est la seule sortie possible.
   \item Proposez un algorithme pour implémenter Abort-Adopt-Commit. 
-  \end{question}
+  \end{questions}
 
   On passe maintenant à l'algorithme de Ben-Or, qui implémente le consensus binaire à partir d'objets Abort-Adopt-Commit.
   
@@ -65,12 +65,12 @@
     \label{algo:benOr}
   \end{algorithm}
 
-  \begin{question}
+  \begin{questions}
   \item Démontrez la validité : toute valeur décidée a été proposée.
   \item Démontrez l'accord : il ne peut exister deux processus qui décident des valeurs différentes.
   \item Démontrez la terminaison : tout processus décide avec probabilité $1$. 
   \item Quelle est la complexité de l'algorithme~\ref{algo:benOr} ?
-  \end{question}
+  \end{questions}
 \end{exercice}
 
 \endgroup

@@ -9,10 +9,10 @@
 
   On rappelle que la méthode \lstinline{AtomicInteger.getAndIncrement()} incrémente le contenu de son instance, et retourne la valeur écrasée de manière atomique. 
 
-  \begin{question}
+  \begin{questions}
   \item Proposez une implémentation d'un verrou \emph{starvation-free} en utilisant l'instruction spéciale \lstinline{getAndIncrement}
     et capable de supporter un nombre de threads inconnu lors de sa construction.
-  \end{question}
+  \end{questions}
 
 \end{exercice}
 

@@ -18,14 +18,14 @@
     interface ThreadPool { Future<T> submit(Callable<T> task); }
   \end{lstlisting}
 
-  \begin{question}
+  \begin{questions}
   \item Proposez une implémentation de \lstinline{Future} et de \lstinline{ThreadPool}, permettant de gérer un thread pool de taille fixe (le nombre de threads sera passé en paramètre au constructeur).  
-  \end{question}
+  \end{questions}
   On souhaite modifier la signature de \lstinline{call()} et de \lstinline{get()} en ajoutant \lstinline{throws Exception},
   pour autoriser les tâches à lever des exceptions. Si une tâche lève une exception, elle doit pouvoir être gérée lors de la récupération du résultat.
-  \begin{question}
+  \begin{questions}
   \item Modifiez votre code pour prendre en compte les exceptions.
-  \end{question}
+  \end{questions}
   
 \end{exercice}
 

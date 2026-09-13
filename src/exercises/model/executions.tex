@@ -7,41 +7,43 @@
   
   On considère trois processus $p_1,p_2,p_3$ dans un modèle asynchrone sans crash.
     
-  \begin{minipage}{.24\textwidth}
+  \begin{minipage}[t]{.24\textwidth}
     \begin{algorithm}[H]
       \Process{$p_1$}{
-        \Send $m_1$ \To $p_3$\\
-        \Send $m_2$ \To $p_2$
+        \nl \Send $m_1$ \To $p_3$\\
+        \nl \Send $m_2$ \To $p_2$
       }
     \end{algorithm}
   \end{minipage}%
   %
-  \begin{minipage}{.37\textwidth}
+  \begin{minipage}[t]{.37\textwidth}
     \begin{algorithm}[H]
+      \setcounter{AlgoLine}{2}
       \Process{$p_2$}{
-        \Send $m_3$ \To $p_3$\;
+        \nl \Send $m_3$ \To $p_3$\;
       }
       \Upon{\Receive $m_2$ \From $p_1$ \At $p_2$}{
-        \Send $m_4$ \To $p_3$
+        \nl \Send $m_4$ \To $p_3$
       }
     \end{algorithm}
   \end{minipage}%
   %
-  \begin{minipage}{.37\textwidth}
+  \begin{minipage}[t]{.37\textwidth}
     \begin{algorithm}[H]
+      \setcounter{AlgoLine}{4}
       \Upon{\Receive $m_k$ \From $p_j$ \At $p_3$}{
-        $\Print(k)$
+        \nl $\Print(k)$
       }
     \end{algorithm}
   \end{minipage}
 
-  \begin{question}
+  \begin{questions}
   \item Décrire la machine à états du programme ci-dessus. 
-  \end{question}
+  \end{questions}
 
-  \begin{question}
+  \begin{questions}
   \item Décrire toutes les exécutions causales possibles. 
-  \end{question}
+  \end{questions}
 
 \end{exercice}
 

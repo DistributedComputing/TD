@@ -8,33 +8,33 @@
 
   Une proportion $p=70\,\%$ d'un programme séquentiel peut être parallélisée. On dispose d'une machine avec $n=10$~c\oe urs.
 
-  \begin{question} 
+  \begin{questions} 
   \item Quelle est l'accélération (speedup) attendue ?
-  \end{question}
-  \begin{correction}
+  \end{questions}
+  \begin{corrections}
     $$ S(10)=\dfrac{1}{(1-p)+\dfrac{p}{10}} = \dfrac{1}{0,3+\dfrac{0,7}{10}} \approx 2,70. $$
-  \end{correction}
+  \end{corrections}
 
-  \begin{question} 
+  \begin{questions} 
   \item On trouve dans le commerce une machine avec $n=20$~c\oe urs. Quelle est l'accélération attendue ?
-  \end{question}
-  \begin{correction}
+  \end{questions}
+  \begin{corrections}
     $$ S(20)=\dfrac{1}{(1-p)+\dfrac{p}{20}} = \dfrac{1}{0,3+\dfrac{0,7}{20}} \approx 2,99. $$
-  \end{correction}
+  \end{corrections}
 
-  \begin{question} 
+  \begin{questions} 
   \item Quelle est l'accélération maximale théorique lorsque $n \to \infty$ ?
-  \end{question}
-  \begin{correction}
+  \end{questions}
+  \begin{corrections}
     $$ \lim_{n\to\infty} S(n) = \dfrac{1}{1-p} = \dfrac{1}{0,3} \approx 3,33. $$
-  \end{correction}
+  \end{corrections}
 
   Un ingénieur pense qu'il existe un moyen d'optimiser la partie séquentielle pour la rendre deux fois plus rapide.
 
-  \begin{question} 
+  \begin{questions} 
   \item Quelle proportion du programme est parallélisable dans la version otimisée ? 
-  \end{question}
-  \begin{correction}
+  \end{questions}
+  \begin{corrections}
     On suppose maintenant que la partie séquentielle est deux fois plus rapide,
     mais que la partie non parallélisable est inchangée.
     On obtient donc : 
@@ -42,19 +42,19 @@
 
     La proportion parallélisable est donc :
     $$ p_{\mathrm{opt}} = \dfrac{T_1 \times p}{T_1^{\mathrm{opt}}} = \dfrac{2p}{1+p} \approx 82\%. $$
-  \end{correction}
+  \end{corrections}
   
-  \begin{question} 
+  \begin{questions} 
   \item Quelle accélération obtient-on alors, dans la parallélisation avec $n = 10$~c\oe urs ?
-  \end{question}
-  \begin{correction}
+  \end{questions}
+  \begin{corrections}
     $$ S_{\mathrm{opt}}(10)=\dfrac{1}{(1-p_{\mathrm{opt}})+\dfrac{p_{\mathrm{opt}}}{10}} \approx 3,86. $$
-  \end{correction}
+  \end{corrections}
 
-  \begin{question} 
+  \begin{questions} 
   \item À coût égal, vaut-il mieux choisir d'acheter la machine avec $n=20$~c\oe urs ou payer l'ingénieur pour optimiser le code ? 
-  \end{question}
-  \begin{correction}
+  \end{questions}
+  \begin{corrections}
     Il faut comparer l'accélération par rapport à $T_{1}$,
     de $T_{20}$, le temps d'exécution du programme initial sur la machine à $20$~c\oe urs,
     et de $T_{10}^{\mathrm{opt}}$, le temps d'exécution du programme optimisé sur la machine à $10$~c\oe urs.
@@ -64,7 +64,7 @@
     \end{itemize}    
 
     L'optimisation de la partie séquentielle est nettement plus rentable.
-  \end{correction}
+  \end{corrections}
   
 \end{exercice}
 

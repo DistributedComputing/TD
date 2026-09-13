@@ -24,9 +24,9 @@
     \label{algo:STA}
   \end{algorithm}
   
-  \begin{question}
+  \begin{questions}
   \item Dans quelle situation peut-il arriver que deux processus corrects ne reçoivent pas les mêmes messages ?  
-  \end{question}
+  \end{questions}
 
   On veut maintenant faire en sorte que tous les processus corrects délivrent le même ensemble de messages.
   Pour cela, \Broadcast{urb} (\emph{uniforme reliable broadcast}) est spécifié par les propriétés suivantes
@@ -60,13 +60,13 @@
     \label{algo:URB}
   \end{algorithm}
   
-  \begin{question}
+  \begin{questions}
   \item Montrez que l'algorithme~\ref{algo:URB} vérifie les propriétés de \Broadcast{urb}. 
   \item On se propose d'inverser l'ordre des lignes \ref{algo:urb:sendall} et \ref{algo:urb:deliver}.
     Quelles propriétés ne sont plus vérifiées ? 
   \item Proposez une spécification de \Broadcast{rb} (\emph{reliable broadcast}),
     la plus forte possible, qui est vérifiée même en inversant les deux lignes. 
-  \end{question}
+  \end{questions}
 \end{exercice}
 
 \endgroup
