@@ -4,22 +4,6 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesPackage{config}[2026/09/09 Configuration of the Multithread Concurrent Programming exercise booklet]
 
-\RequirePackage[T1]{fontenc}
-\RequirePackage[hidelinks]{hyperref}
-\RequirePackage{amsmath,mathrsfs,stmaryrd}
-\RequirePackage{pdfpages}
-\RequirePackage{url}
-\RequirePackage{listings}
-\RequirePackage{graphicx}
-
-\PassOptionsToPackage{vlined}{algorithm2e}
-\RequirePackage{algos}\AlgoEnglish
-\RequirePackage{distributed}
-
-\newcommand\eqdef{\stackrel{\text{def}}{=}}
-\newtheorem{definition}{Definition}
-\newtheorem{theorem}{Théorème}
-
 \codeUE{XLG4IU020}
 \intituleUE[Programmation Concurrente en Multi-Threads]{Programmation Concurrente\iflivret{\\} en Multi-Threads}
 \institution{Nantes Université}
@@ -33,7 +17,7 @@
   \url{matthieu.perrin@univ-nantes.fr}
 }
 
-\cursus[M1 ALMA]{
+\cursus[M1 ALMA]{%
   \ifelselivret{%
     UFR Sciences et Techniques\\
     Master en Informatique\\

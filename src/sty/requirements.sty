@@ -1,0 +1,23 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Author: Matthieu Perrin
+
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{requirements}[2026/09/09 Shared Configurations of the DistributedComputing exercise booklets]
+
+\RequirePackage[T1]{fontenc}
+\RequirePackage[hidelinks]{hyperref}
+\RequirePackage{amsmath,mathrsfs,stmaryrd}
+\RequirePackage{pdfpages}
+\RequirePackage{url}
+\RequirePackage{listings}
+\RequirePackage{graphicx}
+
+\PassOptionsToPackage{vlined}{algorithm2e}
+\RequirePackage{algos}\AlgoEnglish
+\RequirePackage{distributed}
+
+\newcommand\eqdef{\stackrel{\text{def}}{=}}
+\newtheorem{definition}{Definition}
+\newtheorem{theorem}{Théorème}
+
+\endinput
