@@ -4,11 +4,6 @@
 \documentclass{td}
 
 \usepackage{src/courses/pcmt/config}
-\cursus{M1 ALMA}
-\intituleUE{Programmation Concurrente en Multi-Threads}
-
-\typeTP[1]
-\title{Introduction à la concurrence}
 
 \hypersetup{
   pdftitle  = {TP 1 - Introduction à la concurrence},
@@ -19,105 +14,16 @@
 
 \begin{document}
 
-\maketitle
+\numerosession{1}
+\typesession[TP]{Travaux Pratiques}
 
-\begin{description}
-\item[Code de départ associé :] \url{https://github.com/DistributedComputing/TP-concurrence}.
-\end{description}
-
-Récupérez les programmes du TP dans le dépôt \href{https://github.com/DistributedComputing/TP-concurrence}{GitHub} du TP.
-Pour chaque programme du package \texttt{concurrence}, vous devez en comprendre le code,
-prédire les sorties possibles, et ensuite seulement confronter vos prédictions à l'exécution du programme.
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\begin{exercice}[Asynchronie]
-
-  Étudiez le programme \texttt{concurrence.HelloWorld}.
-
-  \begin{question} 
-  \item Prédisez-en la sortie.
-  \item Exécutez le programme plusieurs fois. Comment expliquez-vous les résultats ?
-  \item Utilisez le débogueur pour obtenir les sorties décrites en commentaires.
-  \item Est-il possible d’obtenir le point d'exclamation avant les autres mots ?
-  \end{question}
-  
-\end{exercice}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\begin{exercice}[Section critique]
-
-  Étudiez le code du programme \texttt{concurrence.SharedCounter}.
-
-  \begin{question} 
-  \item Prédisez-en la sortie
-  \item Exécutez le programme en faisant varier le nombre d'itérations :
-    10, 100, 1000, 10000, 100000. Que constatez-vous ?
-  \item Lisez la page \texttt{man javap}, puis exécutez
-    \texttt{javap -c SharedCounter.class}. Expliquez les résultats
-    obtenus lors de l'exécution du programme.
-  \item Ajoutez le mot-clé \lstinline{synchronized} dans les en-tête des méthodes statiques \lstinline{increment} et \lstinline{decrement} puis relancez l'exécution.
-  \item Proposez une définition du mot-clé Java \lstinline{synchronized}.
-  \end{question}
-
-\end{exercice}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\begin{exercice}[Vivacité]
-
-  Étudiez le code du programme \texttt{concurrence.Friend}.
-  
-  \begin{question} 
-  \item Exécutez le programme. Que se passe-t-il ?
-  \item Utilisez le débogueur pour obtenir les sorties décrites en commentaires.
-  \end{question}
-
-\end{exercice}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\begin{exercice}[Moniteurs]
-
-  Étudiez le code du programme \texttt{concurrence.Semaphore}.
-
-  \begin{question} 
-  \item Exécutez le programme en faisant varier la valeur de l'argument du constructeur de \lstinline{Semaphore} : 6, puis 4, puis 2. Que constatez-vous ?
-  \item Proposez une définition de sémaphore.
-  \item Proposez une définition de \lstinline{wait} et \lstinline{notify}.
-  \end{question}
-
-\end{exercice}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\begin{exercice}[Réentrance]
-
-  Étudiez le code du programme \texttt{concurrence.Reentrance} (seulement la classe \texttt{Reentrance}).
-
-  \begin{question} 
-  \item Exécutez le programme. Que remarquez-vous ?
-  \item Lors de la déclaration de \lstinline{lock}, remplacez \lstinline{ReentrantLock} par \lstinline{NonReentrantLock}. Que constatez-vous ?
-  \item Proposez une définition de la réentrance.
-  \end{question}
-
-\end{exercice}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\begin{exercice}[Modèles de mémoire]
-
-  Étudiez le code du programme \texttt{concurrence.Volatile}.
-
-  \begin{question}
-  \item Prédisez-en la sortie.
-  \item Exécutez le programme.
-  \item Ajoutez le mot-clé \texttt{volatile} devant
-    la déclaration de la variable \lstinline{value} et ré-exécutez.
-  \item Que fait le mot-clé \texttt{volatile} ?
-  \end{question}
-
-\end{exercice}
+\session{Introduction à la concurrence} 
+\input{tp/concurrence-header}
+\input{tp/asynchrony}
+\input{tp/criticalsections}
+\input{tp/liveness}
+\input{tp/monitors}
+\input{tp/reentrance}
+\input{tp/memorymodels}
 
 \end{document}

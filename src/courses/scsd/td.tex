@@ -5,10 +5,6 @@
 
 \usepackage{src/courses/scsd/config}
 
-\typeTD
-
-
-
 \hypersetup{
   pdftitle  = {Services de communication et systèmes distribués -- Livret de TD},
   pdfauthor = {Matthieu Perrin},
@@ -19,15 +15,17 @@
 \begin{document}
 
 \maketitlepage
+\typesession[TD]{Travaux Dirigés}
 
 \session{Systèmes asynchrones à passage de messages}
 \input{model/executions}        \vspace{5mm}
+%\sessionappendix
 \input{model/clock}
- 
+
 \session{Cohérence faible}
 %\input{broadcast/eventual_consistency}
 \input{broadcast/orset}
-% 
+
 \session{Diffusion de messages}
 \input{broadcast/causal}
 \input{broadcast/causal_P2P}

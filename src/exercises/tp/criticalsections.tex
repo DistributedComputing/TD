@@ -1,0 +1,24 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Author: Matthieu Perrin
+
+\begingroup
+
+\begin{exercice}[Section critique]
+
+  Étudiez le code du programme \texttt{concurrence.SharedCounter}.
+
+  \begin{questions} 
+  \item Prédisez-en la sortie
+  \item Exécutez le programme en faisant varier le nombre d'itérations :
+    10, 100, 1000, 10000, 100000. Que constatez-vous ?
+  \item Lisez la page \texttt{man javap}, puis exécutez
+    \texttt{javap -c SharedCounter.class}. Expliquez les résultats
+    obtenus lors de l'exécution du programme.
+  \item Ajoutez le mot-clé \lstinline{synchronized} dans les en-tête des méthodes statiques \lstinline{increment} et \lstinline{decrement} puis relancez l'exécution.
+  \item Proposez une définition du mot-clé Java \lstinline{synchronized}.
+  \end{questions}
+
+\end{exercice}
+
+\endgroup
+\endinput

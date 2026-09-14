@@ -6,13 +6,13 @@
 
 \RequirePackage[T1]{fontenc}
 \RequirePackage[hidelinks]{hyperref}
-\RequirePackage{amsmath,amssymb, mathrsfs, stmaryrd}
+\RequirePackage{amsmath,mathrsfs,stmaryrd}
 \RequirePackage{pdfpages}
 \RequirePackage{url}
 \RequirePackage{listings}
 \RequirePackage{graphicx}
 
-\PassOptionsToPackage{boxruled,vlined,linesnumbered}{algorithm2e}
+\PassOptionsToPackage{vlined}{algorithm2e}
 \RequirePackage{algos}\AlgoEnglish
 \RequirePackage{distributed}
 
@@ -25,24 +25,24 @@
 \institution{Nantes Université}
 \logo{src/img/logoUN.png}
 
-\author[Matthieu Perrin]{
+\author[Matthieu \textsc{Perrin}]{
   Matthieu \textsc{Perrin}\\
-  Nantes Université\\
   Laboratoire des Sciences du Numérique de Nantes \\
   UMR CNRS 6004\\
-  Bureau 410, bâtiment 34 \\
-  \url{matthieu.perrin@univ-nantes.fr}\\
+  Bureau 410, bâtiment 34\\
+  \url{matthieu.perrin@univ-nantes.fr}
 }
 
 \cursus[M1 ALMA]{
-  \begin{tabular}[b]{@{}l@{}}
+  \ifelselivret{%
     UFR Sciences et Techniques\\
     Master en Informatique\\
     Première année\\
-    Parcours ALMA\\
-  \end{tabular}
+    Parcours ALMA
+  }{M1 ALMA}%
 }
 
+\title{Livret de Travaux Dirigés}
 
 \endinput
 

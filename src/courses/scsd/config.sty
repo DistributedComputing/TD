@@ -6,7 +6,7 @@
 
 \RequirePackage[T1]{fontenc}
 \RequirePackage[hidelinks]{hyperref}
-\RequirePackage{amsmath,amssymb, mathrsfs, stmaryrd}
+\RequirePackage{amsmath,mathrsfs,stmaryrd}
 \RequirePackage{pdfpages}
 \RequirePackage{url}
 \RequirePackage{listings}
@@ -21,30 +21,27 @@
 \newtheorem{theorem}{Théorème}
 
 \codeUE{XMS3IU070}
-\intituleUE[Services de Communication et Systèmes Distribués]{Services de Communication\\et Systèmes Distribués}
+\intituleUE[Services de Communication et Systèmes Distribués]{Services de Communication\iflivret{\\} et Systèmes Distribués}
 \institution{Nantes Université}
 \logo{src/img/logoUN.png}
 
-\author[Matthieu Perrin]{
+\author[Matthieu \textsc{Perrin}]{
   Matthieu \textsc{Perrin}\\
-  Nantes Université\\
   Laboratoire des Sciences du Numérique de Nantes \\
   UMR CNRS 6004\\
-  Bureau 410, bâtiment 34 \\
-  \url{matthieu.perrin@univ-nantes.fr}\\
+  Bureau 410, bâtiment 34\\
+  \url{matthieu.perrin@univ-nantes.fr}
 }
 
-\cursus[M2 ALMA]{
-  \begin{tabular}[b]{@{}l@{}}
+\cursus[M2 ALMA]{%
+  \ifelselivret{%
     UFR Sciences et Techniques\\
     Master en Informatique\\
     2\ieme{} année\\
-    Parcours ALMA\\
-  \end{tabular}
+    Parcours ALMA
+  }{M2 ALMA}%
 }
 
-\newcommand\Question[1]{\begin{question}\item #1 \end{question}}
+\title{Livret de Travaux Dirigés}
 
 \endinput
-
-
