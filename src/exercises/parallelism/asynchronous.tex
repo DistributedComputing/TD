@@ -8,7 +8,7 @@
 
   On se donne le programme multi-threads suivant : 
 
-  \begin{lstlisting}
+  \begin{lstlisting}[gobble=0]
     Thread t = new Thread(() -> {
       System.out.print("a");
       new Thread(() -> { System.out.print("b"); }).start();
