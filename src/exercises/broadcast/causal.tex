@@ -5,13 +5,7 @@
 
 \begin{exercice}[Diffusion causale]
   On considère l'exécution suivante, dont les pas sont la diffusion ou la livraison causale d'un message.
-  
-  \begin{questions}
-  \item Donnez le vecteur de version associé à chaque message.
-  \item Cette exécution vérifie-t-elle la propriété \textsc{causal-ordering} ?
-    Sinon, quels messages faut-il réordonner ? 
-  \end{questions}
- 
+   
   \begin{center}
     \begin{tikzpicture}
       \draw[process] (0, 3) node[left]{$p_1$} to (7, 3);
@@ -24,7 +18,12 @@
       \draw[messages] (3, 1) edge (3.5, 2) edge (5.5, 3) +( -90:7pt) node{$m_4$};
     \end{tikzpicture}
   \end{center}
- 
+
+    \question{Donner le vecteur de version associé à chaque message.}
+    \question{Cette exécution vérifie-t-elle la propriété \textsc{ordonnancement causal} ?
+      Sinon, identifier les livraisons qui violent cette propriété et indiquer
+      dans quel ordre elles devraient avoir lieu. }
+
 \end{exercice}
 
 \endgroup

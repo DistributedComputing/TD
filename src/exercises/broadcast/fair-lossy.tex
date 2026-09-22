@@ -1,0 +1,53 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Author: Matthieu Perrin
+
+\begingroup
+
+\SetKwBroadcast{FC}{fc}
+\SetKwBroadcast{FLC}{flc}
+
+\begin{exercice}[Canaux avec pertes de messages]
+
+  Lorsque les canaux peuvent perdre des messages, aucune propriété de vivacité
+  ne peut être garantie si les pertes sont totalement arbitraires.
+  On considère donc deux propriétés de vivacité plus faibles que la fiabilité.
+
+  \begin{description}
+  \item[Fiabilité]
+    Si un processus $p_i$ envoie un message $m$ à un processus correct $p_j$,
+    alors $p_j$ finit par recevoir $m$ de $p_i$.
+
+  \item[FC-fiabilité]
+    Pour tout message $m$, si un processus $p_i$ envoie $m$ une infinité de fois
+    à un processus correct $p_j$, alors $p_j$ reçoit $m$ de $p_i$ une infinité
+    de fois.
+
+  \item[FLC-fiabilité]
+    Si un processus $p_i$ envoie une infinité de messages à un processus correct
+    $p_j$, alors $p_j$ reçoit une infinité de messages de $p_i$.
+  \end{description}
+
+  Un canal vérifiant la propriété \textbf{FC-fiabilité} est appelé
+  \emph{fair channel} (\FC), et un canal vérifiant la propriété
+  \textbf{FLC-fiabilité} est appelé \emph{fair lossy channel} (\FLC).
+
+  \begin{questions}
+  \item Montrer que les propriétés \textbf{FC-fiabilité} et
+    \textbf{FLC-fiabilité} sont incomparables :
+    \begin{enumerate}
+    \item donner une exécution qui vérifie \textbf{FC-fiabilité} mais pas
+      \textbf{FLC-fiabilité} ;
+    \item donner une exécution qui vérifie \textbf{FLC-fiabilité} mais pas
+      \textbf{FC-fiabilité}.
+    \end{enumerate}
+
+  \item Montrer que chacun de ces deux types de canaux peut être simulé à
+    partir de l'autre.
+    Pour chaque direction, proposer une simulation et justifier qu'elle
+    vérifie la propriété de fiabilité attendue.
+  \end{questions}
+
+\end{exercice}
+
+\endgroup
+\endinput

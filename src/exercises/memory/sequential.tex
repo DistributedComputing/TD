@@ -1,0 +1,70 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Author: Matthieu Perrin
+
+\begingroup
+
+\SetKwFunction{Read}{read}
+\SetKwFunction{Write}{write}
+\SetKwData{Value}{value}
+\SetKwData{Time}{time}
+\SetKwData{Writer}{writer}
+
+\SetKwBroadcast{MB}{mb}
+\SetKwMessage{Synch}{synch}
+\SetKwMessage{WRITE}{write}
+\SetKwVariable{TS}{ts}
+\SetKwVariable{Val}{val}
+
+\begin{exercice}[Implémentation d'un registre séquentiellement cohérent]
+
+  On considère l'algorithme d'Attiya, Bar-Noy et Dolev (algo.~\ref{algo:ABD}),
+  qui implémente un registre linéarisable.
+  On cherche dans cet exercice à l'adapter pour garantir seulement une propriété plus faible :
+  la cohérence séquentielle (déf.~\ref{def:SC}).
+
+  \begin{algorithm}[H]
+    \lLVariables{\At $p_i$}{
+      $\Value_i \leftarrow \bot$;
+      $\Time_i \leftarrow \langle 0, 0 \rangle$
+    }
+    \Method{$\Read()$ \At $p_i$}{
+      \nl \MB.\SBroadcast $\Synch()$\;
+      \nl \Let $\Val \leftarrow \Value_i$\;
+      \nl \MB.\SBroadcast $\WRITE(\Val, \Time_i)$\;
+      \nl \Return $\Val$
+    }
+    \Method{$\Write(\Val)$ \At $p_i$}{
+      \nl \MB.\SBroadcast $\Synch()$\;
+      \nl \Let $t_i$ \St $\langle t_i,i \rangle > \Time_i$\;
+      \nl \MB.\SBroadcast $\WRITE(\Val, \langle t_i,i \rangle)$;
+    }
+    \Upon{\MB.\Deliver $\WRITE(\Val, \TS)$ \From $p_i$ \At $p_j$}{
+      \nl \lIf{$\Time_j <_{lex} \TS$}{
+        $\Value_j \leftarrow \Val$;~ $\Time_j \leftarrow \TS$
+      }
+    }
+    \caption{Implémentation d'un registre linéarisable}
+    \label{algo:ABD}
+  \end{algorithm}
+
+  \begin{definition}[Cohérence séquentielle]\label{def:SC}
+    Une exécution $H$ est \emph{séquentiellement cohérente} s'il existe un ordre total
+    sur ses opérations qui respecte l'ordre séquentiel des opérations de chaque processus,
+    et tel que l'exécution des opérations dans cet ordre retourne les mêmes valeurs que dans $H$.
+  \end{definition}
+
+  \begin{questions}
+  \item Simplifier autant que possible l'algorithme~\ref{algo:ABD}, tout en garantissant
+    que le registre obtenu reste séquentiellement cohérent.
+    Justifier que l'algorithme obtenu vérifie la définition~\ref{def:SC}.
+    
+  \item Considérez deux registres distincts, chacun implémenté par une instance de l'algorithme
+    obtenu à la question précédente.
+    Construisez une exécution dans laquelle chacune des deux instances est séquentiellement cohérente,
+    mais où l'exécution de l'ensemble des opérations sur les deux registres ne l'est pas.
+  \end{questions}
+
+\end{exercice}
+
+\endgroup
+\endinput

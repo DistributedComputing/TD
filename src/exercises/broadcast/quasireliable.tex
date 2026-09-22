@@ -1,0 +1,50 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Author: Matthieu Perrin
+
+\begingroup
+
+\SetKwBroadcast{RB}{rb}
+\SetKwBroadcast{URB}{urb}
+\SetKwBroadcast{FC}{fc}
+\SetKwBroadcast{X}{x}
+\SetKwFor{Background}{in background}{:}{end}
+\SetKwFunction{Sleep}{sleep}
+\SetKwMessage{MSG}{msg}
+\SetKwMessage{ACK}{ack}
+
+\begin{exercice}[Communication quasi-fiable]
+
+On suppose que les processus communiquent par des \emph{fair channels}.
+On considère l'algorithme suivant.
+
+\begin{algorithm}[H]
+  \Method{\X.\Send $m$ \To $p_j$ \At $p_i$}{
+    \nl \Background{}{
+      \nl \While{$\ACK(m)$ has not been \FC-received}{
+        \nl \FC.\Send $\MSG(m)$ \To $p_j$\;
+        \nl $\Sleep(\Delta)$\tcp*[r]{$\Delta$ est un délai local arbitraire}
+      }
+    }
+  }
+  \Upon{\FC.\Receive $\MSG(m)$ \From $p_i$ \At $p_j$}{
+    \nl \lIf{$m$ has not been \X-received}{
+      \nl \X.\Receive $m$ \From $p_i$;
+    }
+    \nl \FC.\Send $\ACK(m)$ \To $p_i$;
+  }
+  \caption{Communication quasi-fiable (chaque message est considéré unique)}
+  \label{algo:X}
+\end{algorithm}
+
+\begin{questions}
+\item Montrer que l'algorithme~\ref{algo:X} ne vérifie pas la propriété \textbf{Fiabilité}. Donner une exécution qui la viole.
+\item Donner la propriété de vivacité la plus forte vérifiée par l'algorithme~\ref{algo:X}.
+\item Utiliser l'abstraction \X-send/\X-receive pour implémenter une diffusion fiable \RB-broadcast.
+\item L'algorithme obtenu implémente-t-il également une diffusion fiable uniforme \URB-broadcast ?
+  Justifier par une exécution.
+\end{questions}
+
+\end{exercice}
+
+\endgroup
+\endinput

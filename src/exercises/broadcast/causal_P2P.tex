@@ -5,38 +5,52 @@
 
 \SetKwFunction{csend}{causal-send}
 \SetKwFunction{crec}{causal-receive}
-\SetKwFunction{cbc}{cb.broadcast}
-\SetKwFunction{cdel}{cb.deliver}
 
 \begin{exercice}[Communication causale point-à-point]
 
-  Le but de cet exercice est de concevoir un service de communication \emph{causal point-à-point},
-  permettant à des processus de s'échanger des messages grâce à des primitives \csend et \crec,
-  offrant une propriété d'ordre similaire à celle de \cbc.
+  Le but de cet exercice est de concevoir un service de communication
+  \emph{causale point-à-point}, permettant aux processus de s'échanger des
+  messages à l'aide des primitives \csend et \crec.
 
   \begin{questions}
-  \item Expliquez pourquoi le scénario suivant viole la causalité.
-    En déduire une spécification de la propriété d'ordre du service attendu.
+  \item Considérons l'exécution suivante.
 
-  \begin{center}
-    \begin{tikzpicture}[y=7mm]
-      \draw[process] (0, 3) node[left]{$p_1$} to (7, 3);
-      \draw[process] (0, 2) node[left]{$p_2$} to (7, 2);
-      \draw[process] (0, 1) node[left]{$p_3$} to (7, 1);
+    \begin{center}
+      \begin{tikzpicture}[y=7mm]
+        \draw[process] (0, 3) node[left]{$p_1$} to (7, 3);
+        \draw[process] (0, 2) node[left]{$p_2$} to (7, 2);
+        \draw[process] (0, 1) node[left]{$p_3$} to (7, 1);
 
-      \draw[messages] (2, 3) edge[bend below] (5.5, 1) node[above] {$m_1$};
-      \draw[messages] (3, 3) edge             (3.5, 2) node[above] {$m_2$};
-      \draw[messages] (4, 2) edge             (4.5, 1) node[above] {$m_3$};
-    \end{tikzpicture}
-  \end{center}
+        \draw[message] (2, 3) to[out=-60, in=180] (4, 1.5)
+        to[in=150, out=0] (5.5, 1) node[above right] {$m_1$};
+        \path[message] (3, 3) edge (3.5, 2) node[above] {$m_2$};
+        \path[message] (4, 2) edge (4.5, 1) node[above] {$m_3$};
+      \end{tikzpicture}
+    \end{center}
 
-    
-  \item Supposons que chaque processus maintienne une horloge vectorielle $V_i[1..n]$, transmise avec chaque message.  
-    Expliquez pourquoi ces informations ne suffisent pas pour préserver la causalité entre messages destinés à des processus différents.  
-    Quelles informations supplémentaires faudrait-il pour que chaque processus sache quand un message peut être délivré sans violer la causalité ?
+    Expliquer pourquoi la réception de $m_3$ avant celle de $m_1$ par $p_3$
+    constitue une violation de la causalité.
+    En déduire une spécification de la propriété d'ordre que doit garantir
+    le service.
 
-  \item Proposez un  algorithme assurant la causalité point-à-point.  
-    Vérifiez, sur le scénario initial, que la violation observée est évitée.
+  \item Supposons que chaque processus $p_i$ maintienne une horloge vectorielle
+    $V_i[1..n]$, transmise avec chacun de ses messages.
+    Construire deux exécutions dans lesquelles un processus reçoit un message
+    portant la même horloge vectorielle, mais où les messages qui doivent avoir
+    été reçus auparavant par ce processus ne sont pas les mêmes.
+
+  \item Proposer une structure de données permettant à chaque processus de
+    représenter les dépendances causales entre les communications point-à-point.
+    Préciser la signification de chacune de ses composantes.
+
+  \item Proposer un algorithme implémentant les primitives \csend et \crec
+    à l'aide de cette structure.
+    Préciser les informations transmises avec chaque message ainsi que la
+    condition permettant de délivrer un message reçu.
+
+  \item Vérifier sur l'exécution précédente que $m_3$ ne peut pas être délivré
+    par $p_3$ avant $m_1$.
+
   \end{questions}
 
 \end{exercice}

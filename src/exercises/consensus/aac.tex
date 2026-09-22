@@ -1,0 +1,154 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Author: Matthieu Perrin
+
+\begingroup
+
+\SetKwFunction{Propose}{propose}
+\SetKwFunction{Filter}{filter}
+\SetKwBroadcast{MB}{mb}
+\SetKwMessage{FILTER}{filter}
+\SetKwData{F}{f}
+\SetKwVariable{Received}{received}
+\newcommand\Adopt{\textup{\textsc{adopt}}}
+\newcommand\Abort{\textup{\textsc{abort}}}
+\newcommand\Commit{\textup{\textsc{commit}}}
+
+\begin{exercice}[Abort-Adopt-Commit]
+
+  On considère l'abstraction \emph{Abort-Adopt-Commit} (AAC).
+  Chaque processus propose une valeur de $\{\False,\True\}$ et retourne une valeur parmi :
+  $\Commit(\False), \Adopt(\False), \Abort, \Adopt(\True), \Commit(\True)$.
+
+  \begin{definition}[Abort-Adopt-Commit]
+    Une instance d'Abort-Adopt-Commit vérifie les propriétés suivantes :
+    \begin{description}
+    \item[AAC-Validité.]
+      Si tous les processus proposent la même valeur $v$, alors
+      seule $\Commit(v)$ peut être retournée.
+    \item[AAC-Quasi-Accord.]
+      Les valeurs retournées par deux processus sont identiques ou adjacentes
+      dans la liste $\Commit(\False), \Adopt(\False), \Abort, \Adopt(\True), \Commit(\True)$.
+    \item[AAC-Terminaison.]
+      Toute invocation de $\Propose$ par un processus correct termine.
+    \end{description}
+  \end{definition}
+  
+  On considère maintenant l'algorithme~\ref{algo:Filter}, qui implémente l'abstraction $\Filter$.
+
+  \begin{algorithm}[H]
+    \lLVariables{\At $p_i$}{
+      $\Received_i \leftarrow \emptyset$\tcp*[f]{Ensemble des valeurs $v$ pour lesquelles $p_i$ a reçu $\FILTER(v)$}
+    }
+    \Operation{$\Filter(v)$ \At $p_i$}{
+      \nl \MB.\Broadcast $\FILTER(v)$\;
+      \nl \Return $\Received_i$
+    }
+    \nl \lUpon{\MB.\Deliver $\FILTER(v)$ \From $p_j$ \At $p_i$}{
+      $\Received_i \leftarrow \Received_i \cup \{v\}$
+    }
+    \caption{Abstraction \textsc{filter}}
+    \label{algo:Filter}
+  \end{algorithm}
+
+  \begin{questions}
+
+  \item Montrer que si tous les processus proposent la même valeur $v$,
+    alors $\{v\}$ est la seule valeur qui peut être retournée par $\Filter$.
+
+  \item Quelles valeurs une invocation de $\Filter$ peut-elle retourner si les valeurs proposées sont booléennes ?
+
+  \item Caractériser les valeurs que peuvent retourner deux processus dans une même exécution.
+    En particulier :
+    \begin{enumerate}
+    \item donner une exécution dans laquelle un processus retourne $\{\False\}$
+      et un autre $\{\False, \True\}$ ;
+    \item montrer qu'il est impossible que deux processus retournent
+      respectivement $\{\False\}$ et $\{\True\}$.
+    \end{enumerate}
+
+  \item On considère maintenant deux instances partagées de \Filter, $\F_1$ et $\F_2$.
+    Chaque processus $p_i$ appelle d'abord $\F_1.\Filter(v_i)$, puis appelle
+    $\F_2.\Filter(S_i)$ avec l'ensemble $S_i$ retourné par $\F_1$.
+    Caractériser les valeurs que peut retourner $\F_2$, ainsi que les couples
+    de valeurs que peuvent retourner deux processus dans une même exécution
+    de $\F_2.\Filter(\F_1.\Filter(v))$.
+
+  \item En déduire une implémentation d'Abort-Adopt-Commit à partir des deux
+    instances $\F_1$ et $\F_2$ de l'abstraction $\Filter$.
+    Préciser comment chaque valeur retournée par $\F_2$ est interprétée,
+    puis justifier les propriétés \textsc{AAC-Validité},
+    \textsc{AAC-Quasi-Accord} et \textsc{AAC-Terminaison}.
+    
+  \end{questions}
+
+\end{exercice}
+
+    
+
+%  \item On souhaite utiliser l'abstraction $\Filter$ pour implémenter
+%    Abort-Adopt-Commit.
+%    Expliquer pourquoi la transformation
+%    \(      \{v\} \longmapsto \textsc{commit}(v)
+%    \qquad\text{et}\qquad
+%    \{0,1\} \longmapsto \textsc{abort}
+%    \)
+%    ne vérifie pas la propriété \textsc{AAC-Quasi-Accord}.
+
+%\begin{exercice}[\footnote{[B83] Michael Ben-Or. \emph{Another advantage of free choice for completely asynchronous agreement protocols.} PODC 1983}]
+%  
+%  Le but de cet exercice est d'étudier l'algorithme de consensus randomizé de Ben-Or. Il s'agit d'un algorithme de consensus binaire,
+%  c'est-à-dire tel que les seules valeurs qui peuvent être proposées sont $0$ et $1$.
+% 
+%  \begin{definition}[Abort-Adopt-Commit]
+%    Abort-Adopt-Commit est un affaiblissement du consensus dans lequel tous les processus peuvent
+%    proposer $0$ ou $1$, et retourner $\textsc{abort}$, $\textsc{adopt}(v)$ ou $\textsc{commit}(v)$, où $v \in \{0, 1\}$, tel que :
+%    \begin{description}
+%    \item [AAC-Validité.] Si tous les processus proposent la même valeur $v$, $\textsc{commit}(v)$ est la seule sortie possible.
+%    \item [AAC-Quasi-Accord.] Si deux processus retournent des valeurs différentes, alors ces valeurs sont adjacentes dans la liste : 
+%      $\textsc{commit}(0); \textsc{adopt}(0); \textsc{abort}; \textsc{adopt}(1); \textsc{commit}(1)$.
+%    \item [AAC-Terminaison.] Une invocation de ${\sf propose}()$ par un processus correct termine.
+%    \end{description}
+%  \end{definition}
+%  
+%  Dans un premier temps, on s'intéresse à l'algorithme~\ref{algo:Filter} ci-dessous.
+%  
+%  \begin{algorithm}
+%    \SetKwFunction{Filter}{filter}
+%    \SetKwFunction{Local}{local\_coin}
+%    \SetKwFunction{Rand}{rand}
+%    \lLVariables{}{$\mathit{received}_i \leftarrow \emptyset$}
+%    \Operation{$\Filter(v)$}{
+%      \SBroadcast{mutual} $\textsc{filter}(v)$\;
+%      \Return $\mathit{received}_i$\;
+%    }
+%    \lWhen{\Deliver{mutual} $\textsc{filter}(v)$ \From $p_j$}{
+%      $\mathit{received}_i \leftarrow \mathit{received}_i \cup \{v\}$%
+%    }
+%    \caption{Algorithme filter dans le modèle $CAMP_{n,t}[mutual-broadcast]$}
+%    \label{algo:Filter}
+%  \end{algorithm}
+% 
+%  \begin{questions}
+% 
+%  \item Lorsque les valeurs proposées appartiennent à ${0,1}$, caractériser les
+%    ensembles qui peuvent être retournés par $\Filter$.
+%    Caractériser également les couples de résultats qui peuvent être retournés
+%    par deux processus dans une même exécution.
+% 
+%  \item Que peut-on conclure si tous les processus proposent la même valeur $v$ ?
+% 
+%  \item On souhaiterait transformer les résultats de $\Filter$ en valeurs
+%    $\textsc{abort}$, $\textsc{adopt}(v)$ et $\textsc{commit}(v)$.
+%    Expliquer pourquoi associer directement
+%    ${v}$ à $\textsc{commit}(v)$ et ${0,1}$ à $\textsc{abort}$
+%    ne satisfait pas la propriété d'\textsc{AAC-Quasi-Accord}.
+% 
+%  \item Proposer, à partir de l'abstraction $\Filter$, une implémentation
+%    d'Abort-Adopt-Commit et justifier qu'elle en vérifie les trois propriétés.
+% 
+%  \end{questions}
+% 
+%\end{exercice}
+
+\endgroup
+\endinput

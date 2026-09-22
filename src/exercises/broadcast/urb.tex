@@ -1,0 +1,60 @@
+% SPDX-License-Identifier: CC-BY-SA-4.0
+% Author: Matthieu Perrin
+
+\begingroup
+
+\SetKwBroadcast{URB}{urb}
+\SetKwBroadcast{FC}{fc}
+\SetKwBroadcast{STA}{sta}
+\SetKwFor{Background}{in background}{:}{end}
+\SetKwFunction{BgTask}{backgroundTask}
+\SetKwMessage{MSG}{msg}
+\SetKwVariable{RecBy}{received}
+
+\begin{exercice}[Implémenter la diffusion fiable uniforme]
+  On considère maintenant l'algorithme~\ref{algo:Y}, sous les hypothèses suivantes : 
+  \begin{itemize}
+  \item le nombre de pannes est au plus $t < \frac{n}{2}$;
+  \item les processus communiquent par des \emph{fair channels}.
+  \end{itemize}
+  
+  \begin{algorithm}
+    \lLVariables{\At $p_i$}{
+      $\RecBy_i[]$\tcp*[f]{Tableau associatif contenant un ensemble de processus par message}
+    }
+    \Method{\URB.\Broadcast $m$ \At $p_i$}{
+      \nl $\BgTask(m, i)$\;
+    }
+    \Upon{\FC.\Receive $\MSG(m, i)$ \From $p_k$ \At $p_j$}{
+      \nl \lIf{$p_j$ has never called $\BgTask(m, i)$ yet}{
+        $\BgTask(m, i)$
+      }
+      \nl $\RecBy_j[m] \leftarrow \RecBy_j[m] \cup \{k\}$\; 
+      \nl \If{$m$ has not been \URB-delivered and $|\RecBy_j[m]| \geq t + 1$}{
+        \nl \URB.\Deliver $m$ \From $p_i$
+      }
+    }
+    \Fun{$\BgTask(m, i)$ \At $p_j$}{
+      \nl \Background{}{
+        \nl \While{\True}{
+          \nl \lFor{$k$ \From 1 \To $n$}{
+            \nl \FC.\Send $\MSG(m, i)$ \To $p_k$
+          }
+          \nl $\Sleep(\Delta)$\tcp*[r]{$\Delta$ est un délai local arbitraire}
+        }
+      }
+    }
+    \caption{\URB-broadcast dans le modèle considéré (chaque message est considéré unique)}
+    \label{algo:Y}
+  \end{algorithm}
+
+  \begin{questions}
+  \item Montrer que l'algorithme~\ref{algo:Y} implémente \URB-broadcast. 
+  \item Montrer que l'hypothèse $t < \frac{n}{2}$ est nécessaire pour
+    implémenter \URB-broadcast dans un système avec perte de messages. 
+  \end{questions}
+
+\end{exercice}
+
+\endgroup
+\endinput

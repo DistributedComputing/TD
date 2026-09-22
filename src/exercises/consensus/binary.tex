@@ -4,33 +4,73 @@
 \begingroup
 
 \SetKwFunction{Propose}{propose}
-
+\SetKwData{BinCons}{bin\_cons}
+\SetKwVariable{Proposals}{proposals}
+\SetKwMessage{PROP}{proposal}
+\SetKwBroadcast{URB}{urb}
+\SetKwBroadcast{RB}{rb}
+ 
 \begin{exercice}[Du consensus binaire au consensus multi-valué\footnote{[MRT00] Achour Mostefaoui, Michel Raynal and Frédéric Tronel. \emph{From binary consensus to multivalued consensus in asynchronous message-passing systems.} IPL 2000}]
-
-  Le but de cet algorithme est d'implémenter le consensus multi-valué à partir du consensus binaire. 
+ 
+  Le but de cet exercice est d'implémenter le consensus multi-valué à partir du consensus binaire. 
+  \begin{description}
+  \item[Consensus binaire :] les valeurs proposées et décidées appartiennent à $\{\True,\False\}$.
+  \item[Consensus multi-valué :] les valeurs proposées et décidées appartiennent à un ensemble de valeurs arbitraire.
+  \end{description}
   
-  \begin{questions}
-  \item Démontrez les propriétés d'accord, validité et terminaison de l'algorithme~\ref{algo:binConsTomvCons} ci-dessous.
-  \end{questions}
-
+  On considère l'algorithme~\ref{algo:binConsTomvCons} défini ci-dessous.
+  
   \begin{algorithm}
-    \lSVariables{}{$\textsc{bin\_cons}[1, 2, ...]$: sequence of binary consensus objects}
-    \lLVariables{}{$\mathit{proposals}_i \leftarrow [\bot, ..., \bot]$}
-    \Operation{$\Propose(v \in \mathbb{N})$}{
-      \Broadcast{urb} $\textsc{proposal}(v)$\;
-      \For{$k = 0, 1, 2, ...$}{
-        \If{$\textsc{bin\_cons}[k].\Propose(\mathit{proposals}_i[k \mod n] \neq \bot)$}{
-          \Wait{$\mathit{proposals}_i[k \mod n] \neq \bot$}\;
-          \Return $\mathit{proposals}_i[k \mod n]$\;
+    \lSVariables{}{
+      $\BinCons[0, 1, 2, ...]$\tcp*[f]{Séquence infinie d'instances du consensus binaire}
+    }
+    \lLVariables{\At $p_i$}{
+      $\Proposals_i \leftarrow [\bot, ..., \bot]$\tcp*[f]{$\Proposals_i[j] = $ la proposition de $p_j$, si $p_i$ la connaît}
+    }
+    \Operation{$\Propose(v)$ \At $p_i$}{
+      \nl \URB.\Broadcast $\PROP(v)$\;
+      \nl \For{$r = 0, 1, 2, ...$\label{algo:binConsTomvCons:for}}{
+        \nl \Let $j = (r \mod n) + 1$\;
+        \nl \If{$\BinCons[r].\Propose(\Proposals_i[j] \neq \bot)$}{
+          \nl \Wait{$\Proposals_i[j] \neq \bot$}\label{algo:binConsTomvCons:wait}\;
+          \nl \Return $\Proposals_i[j]$\;
         }
       }
     }
-    \lWhen{\Deliver{urb} $\textsc{proposal}(v)$ \From $p_j$}{
-      $\mathit{proposals}_i[j] \leftarrow v$%\;
+    \nl \lWhen{\URB.\Deliver $\PROP(v)$ \From $p_j$ \At $p_i$}{
+      $\Proposals_i[j] \leftarrow v$
     }
-    \caption{Du consensus binaire au consensus multi-valué (code pour $p_i$)}
+    \caption{Du consensus binaire au consensus multi-valué}
     \label{algo:binConsTomvCons}
-  \end{algorithm}  
+  \end{algorithm}
+
+
+  \begin{questions}
+
+  \item On considère une ronde $r$ de la boucle pour (ligne~\ref{algo:binConsTomvCons:for}),
+    et la valeur $j=(r\bmod n)+1$ correspondant, pour un processus $p_i$.
+    Expliquer ce que signifie proposer respectivement $\True$ ou $\False$ à l'instance $\BinCons[r]$
+    de consensus binaire. Que signifie une décision $\True$ ?
+
+  \item Donner une exécution dans laquelle un processus attend à la ligne~\ref{algo:binConsTomvCons:wait}.
+    Expliquer pourquoi cette attente est nécessaire.
+
+  \item Pourquoi l'algorithme considère-t-il une infinité d'instances de consensus
+    binaire en parcourant cycliquement les $n$ processus ?
+    Montrer qu'une variante qui ne considérerait chaque processus qu'une seule
+    fois pourrait ne jamais décider.
+
+  \item On propose de remplacer la diffusion uniforme fiable \URB-broadcast des
+    propositions par une diffusion fiable \RB-broadcast.
+    Construire une exécution dans laquelle un processus correct ne termine
+    jamais son appel à $\Propose$.
+    
+  \item En déduire que tous les processus qui décident retournent la même valeur,
+    que cette valeur a été proposée, et que tout processus correct finit par
+    décider.
+
+  \end{questions}
+  
 \end{exercice}
 
 \endgroup

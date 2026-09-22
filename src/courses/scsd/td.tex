@@ -16,29 +16,54 @@
 \begin{document}
 
 \maketitlepage
-\typesession[TD]{Travaux Dirigés}
+\typesession[TD]{Séance de Travaux Dirigés}
 
 \session{Systèmes asynchrones à passage de messages}
 \input{model/executions}        \vspace{5mm}
-%\sessionappendix
-\input{model/clock}
+\input{model/clock}             \vspace{5mm}
+ 
+\session{Ordonnancement causal des messages}
+\input{broadcast/causal}        \vspace{5mm}
+\input{broadcast/causal_P2P}    \vspace{5mm}
+ 
+\session{Pallier la perte de messages%
+    \footnote{[BBT96] Anindya Basu, Bernadette Charron-Bost, Sam Toueg.
+    \emph{Simulating Reliable Links with Unreliable Links in the Presence of Process Crashes} (WDAG (maintenant DISC) 96)}}
+\input{broadcast/fair-lossy}    \vspace{5mm}
+\input{broadcast/quasireliable} \newpage
+\input{broadcast/urb}
+  
+\session{Implémentation d'une mémoire partagée}
+\input{memory/sequential}
 
-\session{Cohérence faible}
-%\input{broadcast/eventual_consistency}
-\input{broadcast/orset}
+\session{Algorithmes de consensus}
+\input{consensus/binary}
+\input{consensus/aac}
+\input{consensus/benor}
 
-\session{Diffusion de messages}
-\input{broadcast/causal}
-\input{broadcast/causal_P2P}
-%\input{broadcast/ordering}
-% 
+\end{document}
+
+\endinput
+
+
 %\session{Construction d'une machine à états répliquée}
 %\input{consensus/binary}
-%\input{consensus/benor}
+
+%\session{Cohérence faible}
+%%\input{broadcast/eventual_consistency}
+%\input{broadcast/orset}
+
+
+%\input{broadcast/crash}
 %\input{consensus/commoncoin}
 
-\session{Nouveaux types de fautes}
-\input{broadcast/loss}
+%\session{Implémentation d'une mémoire partagée}
+%\input{memory/mutual}
+%\input{memory/abd}
+%\input{memory/cap}
+%\input{memory/crdt}
+
+%\input{consensus/to_broadcast}
 
 
 %Idées de sujet de TD : 
@@ -53,19 +78,3 @@
 %- Quelle structure pour une infinité de ballots, dans multi-Paxos ?
 %- Broadcast virtuellement instantanné
 %- Skeem/Epaxos
-
-
-
-\end{document}
-
-\endinput
-
-%\input{broadcast/crash}
-
-%\session{Implémentation d'une mémoire partagée}
-%\input{memory/mutual}
-%\input{memory/abd}
-%\input{memory/cap}
-%\input{memory/crdt}
-
-%\input{consensus/to_broadcast}
