@@ -56,28 +56,18 @@
     et la vivacité presque sûrement (le tirage aléatoire finit par sélectionner chaque étudiant
     au moins une fois alors que la lumière est éteinte).
   \end{corrections}
-  
-  \begin{questions}
-  \item Reprenez la question précédente, sans l'hypothèse sur l'état initial de la lumière.
-  \end{questions}
-  \begin{corrections}
-    Si l'état initial de la lumière est inconnu,
-    le protocole peut être adapté en demandant au délégué d'ignorer le premier allumage observé
-    (pour éliminer l'incertitude sur l'état de départ).
-  \end{corrections}
-  
-  \begin{questions}
-  \item Reprenez les deux premières questions, sans l'hypothèse que le tirage est uniforme. À la place, on suppose
-    que si personne ne déclare que tout le monde a visité la pièce, chaque étudiant est sélectionné une infinité de fois
-    (pas nécessairement à intervalles bornés). 
-  \end{questions}
-  \begin{corrections}
-    Si le tirage n'est pas uniforme mais seulement équitable
-    (chaque étudiant est choisi une infinité de fois, sans borne sur l'intervalle entre deux visites),
-    la stratégie reste correcte : la sûreté n'est pas affectée,
-    et la vivacité est renforcée et devient déterministe : un étudiant finira par pouvoir faire cette déclaration.
-  \end{corrections}
 
+  \begin{questions}
+  \item Quelle hypothèse sur la suite des étudiants sélectionnés suffit-elle
+    à garantir la vivacité de cette stratégie de manière déterministe ?
+  \end{questions}
+  \begin{corrections}
+    Il suffit que la sélection soit équitable : tant qu'aucun étudiant ne déclare
+    que tous ont visité la pièce, chaque étudiant est sélectionné une infinité de fois.
+    Il n'est pas nécessaire de supposer une borne sur le temps entre deux sélections
+    d'un même étudiant.
+  \end{corrections}
+  
 \end{exercice}
 
 \endgroup
